@@ -9,4 +9,4 @@
   iii. Moralis - https://admin.moralis.io/register <br/>
   iv. Unstoppable Domains - https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/#api-key <br/>
 5. Open up the terminal and run `npm start`
-6. Start chatting with the wallet address whose private key you entered in `.env` file
+6. Go to app.push.org and start chatting with the wallet address whose private key you entered in `.env` file
