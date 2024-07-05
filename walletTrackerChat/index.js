@@ -128,6 +128,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     const params = message.message.content.split(" ");
     const command = params[0];
 
+    // COMMAND 0: Welcome message
     if (!COMMANDS.includes(command.toLowerCase())) {
       throw {
         message: `${WELCOME_MESSAGE}${HELP_MESSAGE}`,
@@ -142,10 +143,16 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
         };
       }
 
+      // ***************************************************************
+      // //////////////////// SENDING MESSAGES /////////////////////////
+      // ***************************************************************
+
       await userAlice.chat.send(message.from, {
         type: "Text",
         content: `${HELP_MESSAGE}`,
       });
+
+      // **************************************************************
     }
 
     // COMMAND 2: /portfolio
@@ -510,6 +517,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
 
       // **************************************************************
     }
+
   } catch (error) {
     await userAlice.chat.send(message.from, {
       type: "Text",
