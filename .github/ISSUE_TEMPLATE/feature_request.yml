@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the Wallet Tracker.
+title: '[FEATURE]: feature name'
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: '## Before you continue, please search our open/closed issues to see if a similar feature has been suggested.'
+
+  - type: checkboxes
+    attributes:
+      label: I confirm that I searched through the issues and didn't find my suggestion.
+      options:
+        - label: Confirm
+          required: true
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: Feature Description
+      description: Short description of the feature. Provide any relevant details.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why do you want this feature? What problem does it solve?
+      placeholder: Explain why this feature should be implemented
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 'Screenshots'
+      description: If applicable, add screenshots to help explain the new feature.
+      value: |
+        ![DESCRIPTION](LINK.png)
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the feature request here.
+      placeholder: Additional context
