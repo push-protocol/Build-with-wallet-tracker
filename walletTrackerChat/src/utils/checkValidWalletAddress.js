@@ -1,3 +1,8 @@
+// ***************************************************************
+// /////////////////// Valid Wallet Address /////////////////////
+// ***************************************************************
+// This helps to check if an Ethereum address is valid or not
+
 import { ethers } from 'ethers';
 
 export function checkValidWalletAddress(address) {

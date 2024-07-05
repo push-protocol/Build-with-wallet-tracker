@@ -1,3 +1,8 @@
+// ***************************************************************
+// /////////////////// Get NFT details /////////////////////
+// ***************************************************************
+//  Get data from Moralis API regarding NFT holdings of an user
+
 import Moralis from "moralis";
 import "dotenv/config";
 
@@ -29,7 +34,7 @@ export const getNfts = async (address, chainIndex) => {
       results.push(nftMetadata);
     });
 
-    return results;
+    return { error: false, data: results };
   } catch (e) {
     return { error: true, message: "Error while fetching wallet NFTs!" };
   }

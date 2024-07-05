@@ -1,3 +1,9 @@
+// ***************************************************************
+// ///////// Resolve Unstoppable Domain and get address //////////
+// ***************************************************************
+// This helps to resolve an UD name to get the Ethereum address
+// Example: johndoe.unstoppable --> 0x123...abc
+
 import { Resolution } from "@unstoppabledomains/resolution";
 import 'dotenv/config'
 

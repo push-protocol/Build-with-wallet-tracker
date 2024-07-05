@@ -1,18 +1,32 @@
-import { getNfts } from "../apis/getNftsMoralis.js";
+// ***************************************************************
+// /////////////////// Format Top NFTs /////////////////////
+// ***************************************************************
+// To format NFTs, consider 2 types of response - NFT image URL and NFT image as Base64
+// Push Chat allows only Base64 encoded image and total payload size should be 1MB 
+
+import { getNfts } from "../apis/getNfts.js";
 import { isUrlWorking } from "../utils/isUrlWorking.js";
 import { isValidUrl } from "../utils/isValidUrl.js";
 import { isBase64Encoded } from "../utils/isBase64Encoded.js";
 import { fetchImageAsBase64 } from "../utils/fetchImageAsBase64.js";
 import { resizeAndCompressBase64Image } from "../utils/resizeAndCompressBase64Image.js";
 
+// Image dimensions and quality
 const width = 800;
 const height = 600;
 const quality = 85;
 
 export const getTopNfts = async (address, chainIndex, noOfNfts) => {
   try {
-    const nfts = await getNfts(address, chainIndex);
+    const response = await getNfts(address, chainIndex);
     const nftArr = [];
+
+    // Return if error
+    if (data.error) {
+      return { error: true, message: data.message }
+    }
+
+    const nfts = response.data;
 
     for (let i = 0; i < nfts.length; i++) {
       const nft = nfts[i];
@@ -26,22 +40,25 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
       }
 
       // 1. Check for URL or base64 encoded image response
-      const isUrl = isValidUrl(nft.image);
-      const isBase64 = isBase64Encoded(nft.image);
+      const isUrl = isValidUrl(nft.image); // NFT image is in URL format?
+      const isBase64 = isBase64Encoded(nft.image); // NFT image is in base64 format?
 
-      // neither
+      // neither?
       if (!isUrl && !isBase64) {
         continue;
       }
 
-      // isUrl
+      // isUrl?
       if (isUrl) {
+
+        // Check if URL is working
         const imageExists = await isUrlWorking(nft.image);
 
         if (!imageExists) {
           continue;
         }
 
+        // Convert URL image data to base64
         const imageBase64 = await fetchImageAsBase64(
           nft.image,
           width,
@@ -49,6 +66,7 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
           quality
         );
 
+        // Add nft to formatted array
         const nftData = {
           name: nft.name,
           imageUrl: nft.image,
@@ -58,10 +76,11 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
         nftArr.push(nftData);
       }
 
-      // isBase64
+      // isBase64?
       if (isBase64) {
         const base64Image = nft.image;
 
+        // Compress base64 to match compatiblity
         const compressedBase64 = await resizeAndCompressBase64Image(
           base64Image,
           width,
@@ -69,6 +88,7 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
           quality
         );
 
+        // Add nft to formatted array
         const nftData = {
           name: nft.name,
           imageUrl: nft.image,
@@ -81,6 +101,7 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
 
     // return data
     return nftArr;
+
   } catch (error) {
     return {
       error: true,

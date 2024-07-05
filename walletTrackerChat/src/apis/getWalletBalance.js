@@ -1,4 +1,8 @@
-// Wallet tracker
+// ***************************************************************
+// /////////////////// Get Wallet Balance /////////////////////
+// ***************************************************************
+//  Get token holdings details of an user from Covalent SDK 
+
 import { CovalentClient } from "@covalenthq/client-sdk";
 import 'dotenv/config'
 

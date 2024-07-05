@@ -1,3 +1,8 @@
+// ***************************************************************
+// //////////////// Compress and convert to base64 ///////////////
+// ***************************************************************
+// This helps to first compress an image fetched from an URL and then convert it into base64
+
 import axios from "axios";
 import sharp from "sharp";
 

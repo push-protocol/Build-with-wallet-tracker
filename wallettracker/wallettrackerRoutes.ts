@@ -2,8 +2,8 @@ import { Router, Request, Response, NextFunction, response } from 'express';
 import { Container } from 'typedi';
 import middlewares from '../../api/middlewares';
 import { celebrate, Joi } from 'celebrate';
-import WallettrackerChannel from './wallettrackerChannel';
-import { globalCycleModel } from './wallettrackerModel';
+import WallettrackerChannel from './walletTrackerChannel';
+import { globalCycleModel } from './walletTrackerModel';
 
 const route = Router();
 

@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
 
@@ -10,29 +12,19 @@ import { resolveUD } from "./src/utils/resolveUD.js";
 
 import { getCryptoEvents } from "./src/apis/getCryptoEvents.js";
 
-import "dotenv/config";
 import { buildChart } from "./src/utils/buildChart.js";
 
 import { walletPerformance } from "./src/controller/walletPerformance.js";
+
+// ***************************************************************
+// /////////////////// INITIALIZE USER ALICE /////////////////////
+// ***************************************************************
 
 const provider = new ethers.JsonRpcProvider(
   `${process.env.ETHEREUM_RPC_PROVIDER}`
 );
 const signer = new ethers.Wallet(`${process.env.PRIVATE_KEY}`, provider);
 console.log("Signer: ", signer);
-
-const COMMANDS = [
-  "/portfolio",
-  "/help",
-  "/calendar",
-  "/performance",
-  "/topnfts",
-];
-const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
-
-const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
-
-const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] - To get your wallet performance across the given days.\nWe are constantly working on it and adding new features.\n4. /topnfts [your wallet address] [no of results] [chain] - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nType '/help' to get the latest available commands and responses.`;
 
 const userAlice = await PushAPI.initialize(signer, {
   env: CONSTANTS.ENV.PROD,
@@ -41,6 +33,43 @@ const userAlice = await PushAPI.initialize(signer, {
 if (userAlice.errors.length > 0) {
   // Handle Errors Here
 }
+
+
+// ***************************************************************
+// ////////////////////// AVAILABLE COMMANDS /////////////////////
+// ***************************************************************
+
+const COMMANDS = [
+  "/portfolio",
+  "/help",
+  "/calendar",
+  "/performance",
+  "/topnfts",
+];
+
+
+// ***************************************************************
+// ////////////////////// AVAILABLE CHAINS ///////////////////////
+// ***************************************************************
+
+const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
+
+
+// ***************************************************************
+// /////////////////// WELCOME & HELP MESSAGES ///////////////////
+// ***************************************************************
+
+const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
+
+const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] - To get your wallet performance across the given days.\nWe are constantly working on it and adding new features.\n4. /topnfts [your wallet address] [no of results] [chain] - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nType '/help' to get the latest available commands and responses.`;
+
+
+// ***************************************************************
+// /////////////////// INITIALIZE CHAT STREAM ////////////////////
+// ***************************************************************
+/*
+  FOR MORE DETAILS ON CHAT STREAMS AND CONFIGURATION OPTIONS, PLEASE REFER: https://push.org/docs/chat/build/stream-chat/
+*/
 
 const stream = await userAlice.initStream(
   [
@@ -62,7 +91,10 @@ const stream = await userAlice.initStream(
   }
 );
 
-// Chat event listeners:
+
+// ***************************************************************
+// /////////////////// SETUP EVENT LISTENERS /////////////////////
+// ***************************************************************
 
 // Stream connection established:
 stream.on(CONSTANTS.STREAM.CONNECT, async (a) => {
@@ -478,7 +510,6 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
 
       // **************************************************************
     }
-
   } catch (error) {
     await userAlice.chat.send(message.from, {
       type: "Text",
@@ -496,10 +527,15 @@ stream.on(CONSTANTS.STREAM.CHAT_OPS, (data) => {
   console.log("Chat operation received.");
 });
 
-// Connect the stream:
-await stream.connect(); // Establish the connection after setting up listeners
-
 // Stream disconnection:
 stream.on(CONSTANTS.STREAM.DISCONNECT, async () => {
   console.log("Stream Disconnected");
 });
+
+
+// ***************************************************************
+// //////////////////// CONNECT THE STREAM ///////////////////////
+// ***************************************************************
+
+await stream.connect(); // Establish the connection after setting up listeners
+

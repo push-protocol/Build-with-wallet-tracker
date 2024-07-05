@@ -1,3 +1,9 @@
+// ***************************************************************
+// /////////////////// Build Pie chart /////////////////////
+// ***************************************************************
+// As a part of token holding, we use ChartJS to generate a pie chart distribution for users 
+// This helps them visualize their asset holding instead of reading bunch of numbers
+
 import ChartJSImage from "chart.js-image";
 
 export const buildChart = async (tokensData) => {
@@ -16,6 +22,8 @@ export const buildChart = async (tokensData) => {
       holdingPercentage.push(tokenHoldingPercent);
     });
 
+    // Build the pie chart data
+    // For more information of configuration options, please refer: https://www.chartjs.org/docs
     const data = {
       labels: tokenNames,
       datasets: [
@@ -44,6 +52,8 @@ export const buildChart = async (tokensData) => {
     };
     
     const line_chart = ChartJSImage().chart(config);
+
+    // Get base64 encoded image
     const chartBase64 = await line_chart.toDataURI()
 
     return chartBase64;

@@ -1,3 +1,9 @@
+// ***************************************************************
+// //////////////// Resolve ENS and get address //////////////////
+// ***************************************************************
+// This helps to resolve an ENS name to get the Ethereum address
+// Example: johndoe.eth --> 0x123...abc
+
 import { ethers } from 'ethers';
 import 'dotenv/config'
 

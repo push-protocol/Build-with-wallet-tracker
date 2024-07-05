@@ -1,15 +1,23 @@
+// ***************************************************************
+// /////////////////// Format Wallet Balance /////////////////////
+// ***************************************************************
+//  Get token holdings details and format it for chat response 
+
 import { getWalletBalance } from "../apis/getWalletBalance.js";
 import { ethers } from "ethers";
 
 export const formattedWalletBalance = async (address, chainIndexFound) => {
   try {
+    // API call to get token holding
     const data = await getWalletBalance(address, chainIndexFound);
     let totalWorth= 0, totalTokenCount = 0, tokensArray = [], tokenInfo;
 
+    // Return if error
     if (data.error) {
       return { error: true, message: data.message }
     }
 
+    // Loop through tokens and format it
     data?.data?.map((item) => {
       let tokenBalance = Number(
         ethers.formatUnits(item.balance, item.contract_decimals)

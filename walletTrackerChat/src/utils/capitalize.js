@@ -1,3 +1,9 @@
+// ***************************************************************
+// /////////////////////////// Capitalize ////////////////////////
+// ***************************************************************
+// This helps to capitalize the first letter of an element in an array
+// Example: ["hello", "hi", "hey"] --> Hello Hi Hey
+
 export const capitalizeEveryWordLetter = (title) => {
     const updateStr = title.map((word) => {
       if (/^[a-zA-Z]$/.test(word.charAt(0))) {

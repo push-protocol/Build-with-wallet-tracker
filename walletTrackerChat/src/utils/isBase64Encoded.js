@@ -1,3 +1,8 @@
+// ***************************************************************
+// ///////////////////////// Valid base64 ////////////////////////
+// ***************************************************************
+// This helps to check if a base64 string is valid or not
+
 export const isBase64Encoded = (str) => {
     if (typeof str !== 'string') {
       return false;

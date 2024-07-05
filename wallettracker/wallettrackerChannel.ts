@@ -8,9 +8,9 @@ import config from "../../config";
 import { ethers } from "ethers";
 import { CovalentClient } from "@covalenthq/client-sdk";
 import { user, CONSTANTS, PushAPI } from "@pushprotocol/restapi";
-import keys from "./wallettrackerKeys.json";
-import settings from "./wallettrackerSettings.json";
-import { userDataModel, blockNumberModel } from "./wallettrackerModel";
+import keys from "./walletTrackerKeys.json";
+import settings from "./walletTrackerSettings.json";
+import { userDataModel, blockNumberModel } from "./walletTrackerModel";
 import axios from "axios";
 import moment from "moment";
 import { Alchemy, Network } from "alchemy-sdk";
@@ -35,7 +35,7 @@ export default class WallettrackerChannel extends EPNSChannel {
       url: "https://push.org/",
       useOffChain: true,
     });
-    this.model = require("./wallettrackerModel").default;
+    this.model = require("./walletTrackerModel").default;
   }
 
   async fetchPortolio() {

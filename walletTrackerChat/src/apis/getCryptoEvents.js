@@ -1,10 +1,14 @@
+// ***************************************************************
+// /////////////////// Get Crypto Events /////////////////////
+// ***************************************************************
+//  Get data from Coindar API regarding crypto events based on tokens present in the user's wallet
+
 import axios from "axios";
 import moment from "moment";
 
 import 'dotenv/config'
 
 import { capitalizeEveryWordLetter } from "../utils/capitalize.js";
-
 
 const COINDAR_API_KEY = process.env.COINDAR_API_KEY;
 

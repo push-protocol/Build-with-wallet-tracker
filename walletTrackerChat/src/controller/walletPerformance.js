@@ -1,9 +1,16 @@
+// ***************************************************************
+// /////////////////// Format Wallet Performance /////////////////////
+// ***************************************************************
+// As a part of wallet performance, we use ChartJS to plot a wallet performance graph for users 
+// This helps them visualize their wallet activity instead of reading bunch of numbers
+
 import { CovalentClient } from "@covalenthq/client-sdk";
 
 import ChartJSImage from "chart.js-image";
 
 import "dotenv/config";
 
+// Available chains
 const CHAINS = [
   "eth-mainnet",
   "matic-mainnet",
@@ -11,10 +18,13 @@ const CHAINS = [
   "arbitrum-mainnet",
   "polygon-zkevm-mainnet",
 ];
+
+
 const QUOTE_CURRENCY = ["USD"];
 
 const COVALENT_API_KEY = process.env.COVALENT_API_KEY;
 
+// Formats date and their corresponding wallet valuation
 const processData = (items) => {
   const portfolioData = {};
   items.forEach((item) => {
@@ -30,8 +40,8 @@ const processData = (items) => {
   let dates = Object.keys(portfolioData).sort();
   let values = dates.map((date) => portfolioData[date]);
 
-  dates.pop();
-  values.pop();
+  dates.pop(); // Currency quote is null for the current date
+  values.pop(); // Currency quote is null for the current date
 
   return { error: false, dates, values };
 };
@@ -79,6 +89,8 @@ export const walletPerformance = async (address, chainIndexFound, noOfDays) => {
 
   const { dates, values } = processData(allItems);
 
+  // Build the line graph
+  // For more information of configuration options, please refer: https://www.chartjs.org/docs/latest/charts/line.html
   const labels = dates;
   const data = {
     labels: labels,
@@ -98,6 +110,8 @@ export const walletPerformance = async (address, chainIndexFound, noOfDays) => {
   };
 
   const line_chart = ChartJSImage().chart(config);
+
+  // Get base64 encoded image
   const imageURI = await line_chart.toDataURI();
 
   return { imageURI };

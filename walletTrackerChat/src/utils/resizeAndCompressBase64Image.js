@@ -1,3 +1,8 @@
+// ***************************************************************
+// //////////////// Resize and compress base64 ///////////////////
+// ***************************************************************
+// This helps to get a bae64 string and compress it to make it compatible for Push Chat
+
 import sharp from "sharp";
 
 // Function to resize and compress a base64 encoded image
