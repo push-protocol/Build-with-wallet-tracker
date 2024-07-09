@@ -3,7 +3,6 @@
 import { exec } from 'child_process';
 import fs from 'fs';
 import readline from 'readline';
-import chalk from 'chalk';
 
 // Function to execute a shell command
 const executeCommand = (command) => {
@@ -14,7 +13,7 @@ const executeCommand = (command) => {
                 reject(error);
             } else {
                 // console.log(`Executed: ${command}`);
-                console.log(chalk.green(`${command} executed successfully`));
+                console.log(`${command} executed successfully`);
                 resolve(stdout ? stdout : stderr);
             }
         });
@@ -49,14 +48,14 @@ const promptInput = (question) => {
 // Function to write to .env file
 const writeToEnvFile = (content) => {
     fs.writeFileSync('./.env', content);
-    console.log(chalk.green('\n.env file updated successfully!'));
+    console.log('\n.env file updated successfully!');
 };
 
 // Main function to execute commands and populate .env file
 const main = async () => {
-    console.log(chalk.yellow("\n**********************************************************"))
-    console.log(chalk.yellow("///////////////// WALLET TRACKER CHAT SETUP //////////////"))
-    console.log(chalk.yellow("**********************************************************\n"))
+    console.log("\n**********************************************************")
+    console.log("///////////////// WALLET TRACKER CHAT SETUP //////////////")
+    console.log("**********************************************************\n")
     // Example: Prompt user for environment variables
     const pvtKey = await promptInput('Enter your Private Key: ');
     const ethRpc = await promptInput('Enter Ethereum RPC provider: ');
@@ -85,7 +84,7 @@ const main = async () => {
         }
     }
 
-    console.log(chalk.blue('\n\nRun `npm start` to fire up your application.'));
+    console.log('\n\nRun `npm start` to fire up your application.');
 };
 
 // Start main execution
