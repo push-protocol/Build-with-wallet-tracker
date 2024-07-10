@@ -4,7 +4,6 @@ import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
 
 import { formattedWalletBalance } from "./src/controller/formattedWalletBalance.js";
-import { getTopNfts } from "./src/controller/getTopNfts.js";
 
 import { checkValidWalletAddress } from "./src/utils/checkValidWalletAddress.js";
 import { resolveENS } from "./src/utils/resolveENS.js";
@@ -12,9 +11,10 @@ import { resolveUD } from "./src/utils/resolveUD.js";
 
 import { getCryptoEvents } from "./src/apis/getCryptoEvents.js";
 
-import { buildChart } from "./src/utils/buildChart.js";
-
-import { walletPerformance } from "./src/controller/walletPerformance.js";
+import { command_portfolio } from "./src/commands/command_portfolio.js";
+import { command_performance } from "./src/commands/command_performance.js";
+import { command_topNfts } from "./src/commands/command_topNfts.js";
+import { command_calendar } from "./src/commands/command_calendar.js";
 
 // ***************************************************************
 // /////////////////// INITIALIZE USER ALICE /////////////////////
@@ -34,7 +34,6 @@ if (userAlice.errors.length > 0) {
   // Handle Errors Here
 }
 
-
 // ***************************************************************
 // ////////////////////// AVAILABLE COMMANDS /////////////////////
 // ***************************************************************
@@ -47,13 +46,11 @@ const COMMANDS = [
   "/topnfts",
 ];
 
-
 // ***************************************************************
 // ////////////////////// AVAILABLE CHAINS ///////////////////////
 // ***************************************************************
 
 const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
-
 
 // ***************************************************************
 // /////////////////// WELCOME & HELP MESSAGES ///////////////////
@@ -62,7 +59,6 @@ const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
 const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
 
 const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] - To get your wallet performance across the given days.\nWe are constantly working on it and adding new features.\n4. /topnfts [your wallet address] [no of results] [chain] - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nType '/help' to get the latest available commands and responses.`;
-
 
 // ***************************************************************
 // /////////////////// INITIALIZE CHAT STREAM ////////////////////
@@ -90,7 +86,6 @@ const stream = await userAlice.initStream(
     raw: false, // Receive events in structured format
   }
 );
-
 
 // ***************************************************************
 // /////////////////// SETUP EVENT LISTENERS /////////////////////
@@ -208,67 +203,14 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       // //////////////////////// CHECKS END /////////////////////////
       // ***************************************************************
 
-      let walletData, pieChartURI;
-
-      if (params.length == 2) {
-        // All chains
-        chainIndexFound = -1;
-        walletData = await formattedWalletBalance(
-          resolvedAddress,
-          chainIndexFound
-        );
-
-        pieChartURI = await buildChart(walletData);
-      }
-
-      if (params.length == 3) {
-        // Specific chain
-        walletData = await formattedWalletBalance(
-          resolvedAddress,
-          chainIndexFound
-        );
-
-        pieChartURI = await buildChart(walletData);
-      }
-
-      if (walletData.error) {
-        throw {
-          message: `${walletData.message}`,
-        };
-      }
-
-      const walletWorth = walletData.totalWorth;
-      const walletTokens = walletData.tokensInfo;
-
-      let walletPerformance;
-
-      if (chainIndexFound == -1) {
-        walletPerformance = `Total Assets Worth: 💲${walletWorth}\n\n\n`;
-      }
-
-      if (chainIndexFound != -1) {
-        walletPerformance = `Assets Worth: 💲${walletWorth}\n\n\n`;
-      }
-
-      walletTokens.map((walletToken, index) => {
-        walletPerformance += `• ${walletToken.name}: ${walletToken.balance} ($${walletToken.worth})\n`;
-      });
-
-      // ***************************************************************
-      // //////////////////// SENDING MESSAGES /////////////////////////
-      // ***************************************************************
-
-      await userAlice.chat.send(message.from, {
-        type: "Text",
-        content: `${walletPerformance}`,
-      });
-
-      await userAlice.chat.send(message.from, {
-        type: "Image",
-        content: `{"content":"${pieChartURI}"}`,
-      });
-
-      // **************************************************************
+      const receiver = message.from;
+      await command_portfolio(
+        params,
+        receiver,
+        userAlice,
+        resolvedAddress,
+        chainIndexFound
+      );
     }
 
     // COMMAND 3: /calendar
@@ -296,50 +238,8 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       // //////////////////////// CHECKS END /////////////////////////
       // ***************************************************************
 
-      // Error from covalent
-      const walletData = await formattedWalletBalance(message.from.slice(7));
-
-      if (walletData.error) {
-        throw {
-          message: `${walletData.message}`,
-        };
-      }
-
-      if (walletData.tokensInfo.length == 0) {
-        throw {
-          message:
-            "There are no tokens in your wallet. Try a different wallet!!",
-        };
-      }
-
-      const walletTokens = walletData.tokensInfo;
-      let tokenSymbols = [];
-
-      walletTokens.map((walletToken, index) => {
-        tokenSymbols.push(walletToken.name);
-      });
-
-      // Get events here
-      const { cryptoEvents } = await getCryptoEvents(tokenSymbols, noOfDays);
-
-      if (cryptoEvents.length == 0) {
-        throw { message: "No crypto events within the specified days!" };
-      }
-
-      const eventsMessage =
-        "Here, is the list of events organized📅: \n• " +
-        cryptoEvents.join("\n• ");
-
-      // ***************************************************************
-      // //////////////////// SENDING MESSAGES /////////////////////////
-      // ***************************************************************
-
-      await userAlice.chat.send(message.from, {
-        type: "Text",
-        content: `${eventsMessage}`,
-      });
-
-      // **************************************************************
+      const receiver = message.from;
+      await command_calendar(receiver, userAlice, noOfDays);
     }
 
     // COMMAND 4: /performance
@@ -402,22 +302,14 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       // //////////////////////// CHECKS END /////////////////////////
       // ***************************************************************
 
-      const { imageURI } = await walletPerformance(
+      const receiver = message.from;
+      await command_performance(
+        noOfDays,
+        receiver,
+        userAlice,
         resolvedAddress,
-        chainIndexFound,
-        noOfDays
+        chainIndexFound
       );
-
-      // ***************************************************************
-      // //////////////////// SENDING MESSAGES /////////////////////////
-      // ***************************************************************
-
-      await userAlice.chat.send(message.from, {
-        type: "Image",
-        content: `{"content":"${imageURI}"}`,
-      });
-
-      // **************************************************************
     }
 
     // COMMAND 5: /top nfts
@@ -481,43 +373,16 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       // //////////////////////// CHECKS END /////////////////////////
       // ***************************************************************
 
-      // Checks ends here
-      await userAlice.chat.send(message.from, {
-        type: "Text",
-        content: `Please wait as this command might take some time!\nTill then did you do the laundry your mom asked you to?`,
-      });
-
-      // Main logic
-      const response = await getTopNfts(
+      const receiver = message.from;
+      await command_topNfts(
+        receiver,
+        userAlice,
         resolvedAddress,
         chainIndexFound,
         noOfNfts
       );
-
-      // ***************************************************************
-      // //////////////////// SENDING MESSAGES /////////////////////////
-      // ***************************************************************
-
-      // Send NFTs and name
-      for (let i = 0; i < response.length; i++) {
-        const nft = response[i];
-
-        await userAlice.chat.send(message.from, {
-          type: "Text",
-          content: `🖼️NFT Name: ${nft.name}`,
-        });
-
-        await userAlice.chat.send(message.from, {
-          type: "Image",
-          content: `{"content":"${nft.imageBase64}"}`,
-        });
-
-        console.log("Text & Image sent successfully");
-      }
-
-      // **************************************************************
     }
-
+    
   } catch (error) {
     await userAlice.chat.send(message.from, {
       type: "Text",
@@ -540,10 +405,8 @@ stream.on(CONSTANTS.STREAM.DISCONNECT, async () => {
   console.log("Stream Disconnected");
 });
 
-
 // ***************************************************************
 // //////////////////// CONNECT THE STREAM ///////////////////////
 // ***************************************************************
 
 await stream.connect(); // Establish the connection after setting up listeners
-
