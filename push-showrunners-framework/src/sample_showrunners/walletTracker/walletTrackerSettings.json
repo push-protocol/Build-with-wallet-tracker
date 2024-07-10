@@ -6,11 +6,8 @@
     "totalPages": 1
   },
   "DEFAULT_BALANCE_OBJECT": { "balance": 0 },
-  "covalentApiKey": "YOUR COVALENT KEY HERE",
   "providerUrl":"https://rpc.ankr.com/eth",
   "pushCoreContract":"0x66329Fdd4042928BfCAB60b179e1538D56eeeeeE",
-  "etherscanApiKey":"YOUR ETHERSCAN KEY HERE",
-  "coindarApiKey": "YOUR COINDAR KEY HERE",
   "yieldFarmingContract":"0x9D2513F5b539DC774C66b28ACEc94e4bD00105C2",
   "WETHAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
   "USDTAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
@@ -21,6 +18,9 @@
   "DeprecationPerEpoch":900,
   "genisisEpoc":17821509,
   "annualRewards":1323100,
+  "coindarApiKey": "YOUR COINDAR KEY HERE",
+  "etherscanApiKey":"YOUR ETHERSCAN KEY HERE",
+  "covalentApiKey": "YOUR COVALENT KEY HERE",
   "alchemyApiKey":"YOUR ALCHEMY KEY HERE"
 
 }
