@@ -39,8 +39,8 @@ You can explore the chatbot [here](https://app.push.org/chat/0xF67838B61Fd40eb79
 
 ## Setting-up the project locally
 
-- Guide for setting up Wallet Tracker channel
-- Guide for setting up Wallet Tracker chatbot
+- [Guide for setting up Wallet Tracker channel](./push-showrunners-framework/README.md)
+- [Guide for setting up Wallet Tracker chatbot](./wallet-tracker-chat/README.md)
 
 ## Contributing
 
