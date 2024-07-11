@@ -46,7 +46,7 @@ const writeWalletTrackerKeysFile = (privateKey) => {
     PRIVATE_KEY_OLD_STANDARD: `0x${privateKey}`,
   };
 
-  const walletTrackerKeysPath = path.join('src', 'sample_showrunners', 'walletTracker', 'walletTrackerKeys.json');
+  const walletTrackerKeysPath = path.join('src', 'showrunners', 'walletTracker', 'walletTrackerKeys.json');
   const walletTrackerKeysDir = path.dirname(walletTrackerKeysPath);
 
   // Ensure the directory exists
