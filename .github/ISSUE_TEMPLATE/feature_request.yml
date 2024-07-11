@@ -3,16 +3,6 @@ description: Suggest a new feature or enhancement for the Wallet Tracker.
 title: '[FEATURE]: feature name'
 labels: [enhancement]
 body:
-  - type: markdown
-    attributes:
-      value: '## Before you continue, please search our open/closed issues to see if a similar feature has been suggested.'
-
-  - type: checkboxes
-    attributes:
-      label: I confirm that I searched through the issues and didn't find my suggestion.
-      options:
-        - label: Confirm
-          required: true
 
   - type: textarea
     id: feature_description
