@@ -78,22 +78,6 @@ const runYarnInstall = () => {
   });
 };
 
-// Function to move the walletTracker folder
-const moveWalletTrackerFolder = () => {
-  const srcPath = path.join('src', 'sample_showrunners', 'walletTracker');
-  const destPath = path.join('src', 'showrunners', 'walletTracker');
-
-  return new Promise((resolve, reject) => {
-    fs.rename(srcPath, destPath, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
-
 // Main function to execute the script
 const main = async () => {
   try {
@@ -116,9 +100,6 @@ const main = async () => {
 
         await writeWalletTrackerKeysFile(privateKey);
         console.log('walletTrackerKeys.json file created successfully!');
-
-        await moveWalletTrackerFolder();
-        console.log('walletTracker folder moved successfully!');
 
         await runYarnInstall();
         console.log('yarn install executed successfully!');

@@ -143,6 +143,6 @@ dump.rdb*
 yarn.lock 
 
 # ChannelKeys
-src/showrunners
+src/sample_showrunners
 src/showrunners/*/*Keys.json
 src/showrunners/*/*PrivateSettings.json
