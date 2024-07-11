@@ -23,19 +23,20 @@ Before setting up the project locally, you need to:
     ```
     cd push-showrunner-framework/
     ```
+3. **Initialize Docker:**
+    For local ease of development, we use Docker. Make sure you have it installed. You can get Docker [here](https://docs.docker.com/get-docker/).
+    ```
+    docker-compose up
+    ```
 
-3. **Install packages and set up environment variables:**
-    We have simplified this process for you. Use the `setup.js` script to complete the setup.
+4. **Install packages and set up environment variables:**
+    We have simplified this process for you. Use the `setup.js` script to complete the setup. Before that make sure you open up a new terminal and point to same folder i.e push-showrunner-framwork
     ```
     node setup.js
     ```
     Make sure to enter the correct details. If anything goes sideways, check the newly created `.env` file.
 
-4. **Initialize Docker:**
-    For local ease of development, we use Docker. Make sure you have it installed. You can get Docker [here](https://docs.docker.com/get-docker/).
-    ```
-    docker-compose up
-    ```
+
 
 5. **Start the project:**
     ```
@@ -60,12 +61,12 @@ Not sure where to start? Join our Discord, and we will help you get started!
 
 1. **Fork the repository:** Create your own copy of it.
 2. **Clone your personal copy onto your personal machine:**
-    ```bash
+    ```
     git clone https://github.com/YOUR_USERNAME/Build-with-wallet-tracker.git
     ```
 3. **Raise an issue on GitHub repo:** Briefly describe the issue or feature.
 4. **Create a branch on your local machine:** Name the branch as the issue name.
-    ```bash
+    ```
     git checkout -b issue-name
     ```
 5. **Make your changes:** After making changes, commit them.
