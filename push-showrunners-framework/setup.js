@@ -137,7 +137,8 @@ const run = async () => {
     // Task 4: Run `yarn install`
     await runYarnInstall();
     console.log('yarn install executed successfully!');
-    console.log('\nRun `yarn start` to fire up your channel');
+    console.log('\nRun `yarn run dev` to fire up your channel');
+    
   } catch (error) {
     console.error('Error writing files:', error);
   }
@@ -169,7 +170,7 @@ const main = async () => {
         await runYarnInstall();
         console.log('yarn install executed successfully!');
 
-        console.log('\nRun `yarn start` to fire up your channel');
+        console.log('\nRun `yarn run dev` to fire up your channel');
       }
 
     } else {
