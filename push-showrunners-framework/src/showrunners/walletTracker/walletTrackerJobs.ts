@@ -18,11 +18,12 @@ import { Container } from "typedi";
 import schedule from "node-schedule";
 import wtChannel from "./walletTrackerChannel";
 import { globalCycleModel } from "./walletTrackerModel";
-import { times } from "lodash";
-import { timeStamp } from "console";
-import { BalanceService } from "@covalenthq/client-sdk";
 
 export default () => {
+// ***************************************************************
+// /////////////////// EXISTING JOBS HERE ////////////////////////
+// ***************************************************************
+
   // wallet tracker jobs
   const startTime = new Date(new Date().setHours(0, 0, 0, 0));
   const channel = Container.get(wtChannel);
@@ -117,4 +118,8 @@ export default () => {
       }
     }
   );
+
+// ***************************************************************
+// //////////////// CONTRIBUTIONS STARTS HERE ////////////////////
+// ***************************************************************
 };

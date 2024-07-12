@@ -38,6 +38,10 @@ export default class WallettrackerChannel extends EPNSChannel {
     this.model = require("./walletTrackerModel").default;
   }
 
+// ***************************************************************
+// ///////////////// EXISTING FEATURES HERE //////////////////////
+// ***************************************************************
+
   async fetchPortolio() {
     const client = new CovalentClient(settings.covalentApiKey);
     const provider = new ethers.providers.JsonRpcProvider(
@@ -722,4 +726,8 @@ export default class WallettrackerChannel extends EPNSChannel {
       }
     }
   }
+
+// ***************************************************************
+// //////////////// CONTRIBUTIONS STARTS HERE ////////////////////
+// ***************************************************************
 }
