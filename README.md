@@ -26,13 +26,24 @@ You can explore the channel [here](https://app.push.org/channels/0x0f0aE1ceEBc4b
 
 The chatbot integrates all the functionalities of the channel into an interactive experience. The features include:
 
-- **Check User's Wallet Worth and Token Holdings:** Easily check the worth of your wallet and your token holdings.
-- **ENS and Unstoppable Domain Support:** Get support for Ethereum Name Service (ENS) and Unstoppable Domains.
-- **Check Out Crypto Events:** Stay updated with upcoming crypto events.
-- **Push and Uniswap V2 LP APR Staging Rates:** Access the latest APR rates for Push and Uniswap V2 LP staking.
-- **Wallet Performance:** Monitor the performance of your wallet.
-- **Multi-Chain Support for Wallet:** Enjoy support for multiple blockchain networks.
+- **Check User's Wallet Worth and Token Holdings:** Easily check the worth of your wallet and your token holdings.  
+  `/portfolio [wallet address] [chain]` : To get your current token holding and asset valuation on the specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains.
+
+- **Check Out Crypto Events:** Stay updated with upcoming crypto events.  
+  `/calendar [number of days]` : To get crypto events organized by your favorite tokens within the specified number of days.
+
+- **Wallet Performance:** Monitor the performance of your wallet.  
+  `/performance [your wallet address] [no of days] [chain]` : To get your wallet performance across the given days.
+
 - **NFTs Portfolio:** View your NFTs portfolio.
+
+- **ENS and Unstoppable Domain Support:** Get support for Ethereum Name Service (ENS) and Unstoppable Domains.
+
+- **Multi-Chain Support for Wallet:** Enjoy support for multiple blockchain networks.
+
+
+We are constantly working on it and adding new features. Type `/help` to get the latest available commands and responses.
+
 
 You can explore the chatbot [here](https://app.push.org/chat/0xF67838B61Fd40eb790A5893A7E3edc9e04637d88) and start interacting with it!
 
