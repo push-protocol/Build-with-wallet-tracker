@@ -3,7 +3,7 @@ import cryptoHelper from '../helpers/cryptoHelper';
 import LoggerInstance from '../loaders/logger';
 const utils = require('../helpers/utilsHelper');
 
-// Loads wallejs using the private keys present in each folder
+// Loads wallets using the private keys present in each folder
 // Scans for channelNameKeys.ts file in the channel directory 
 // Loads the private key and add the keys to channlKeys
 const channelWallets = function loadShowrunnersWallets() {
@@ -49,7 +49,7 @@ const channelWallets = function loadShowrunnersWallets() {
         LoggerInstance.info(`     ✔️  ${channel} Loaded ${Object.keys(channelKeys[`${channel}`]).length} Wallet(s)!`);
       } else {
         LoggerInstance.info(
-          `     ❌  ${channel} has no wallejs attached to them... aborting! Check ${channel}Keys.ts!!!`,
+          `     ❌  ${channel} has no wallets attached to them... aborting! Check ${channel}Keys.ts!!!`,
         );
         process.exit(1);
       }
