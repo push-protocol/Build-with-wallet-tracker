@@ -39,16 +39,17 @@ export const command_portfolio = async (
     }
 
     const walletWorth = walletData.totalWorth;
+    const totalTokens = walletData.totalTokens;
     const walletTokens = walletData.tokensInfo;
 
     let walletPerformance;
 
     if (chainIndexFound == -1) {
-      walletPerformance = `Total Assets Worth: 💲${walletWorth}\n\n\n`;
+      walletPerformance = `Total Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${totalTokens}\n\n\n`;
     }
 
     if (chainIndexFound != -1) {
-      walletPerformance = `Assets Worth: 💲${walletWorth}\n\n\n`;
+      walletPerformance = `Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${totalTokens}\n\n\n`;
     }
 
     walletTokens.map((walletToken, index) => {
