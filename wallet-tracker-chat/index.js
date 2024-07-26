@@ -1,15 +1,13 @@
 import "dotenv/config";
 
+import { pm2Automation } from "./pm2Restart.js";
+
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
-
-import { formattedWalletBalance } from "./src/controller/formattedWalletBalance.js";
 
 import { checkValidWalletAddress } from "./src/utils/checkValidWalletAddress.js";
 import { resolveENS } from "./src/utils/resolveENS.js";
 import { resolveUD } from "./src/utils/resolveUD.js";
-
-import { getCryptoEvents } from "./src/apis/getCryptoEvents.js";
 
 import { command_portfolio } from "./src/commands/command_portfolio.js";
 import { command_performance } from "./src/commands/command_performance.js";
@@ -403,6 +401,9 @@ stream.on(CONSTANTS.STREAM.CHAT_OPS, (data) => {
 // Stream disconnection:
 stream.on(CONSTANTS.STREAM.DISCONNECT, async () => {
   console.log("Stream Disconnected");
+
+  // For autorestart chat streams once disconnected. Works with Pm2
+  // pm2Automation();
 });
 
 // ***************************************************************
