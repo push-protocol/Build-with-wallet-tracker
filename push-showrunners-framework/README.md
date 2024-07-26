@@ -47,6 +47,8 @@ You should now have the notification sending.
 
 ## Contributing Guidelines
 
+**Before getting into contributing, please understand the folder structure and find where to make changes by reading the [Contribution Guidelines](Contribution.md).**
+ 
 Build with Wallet Tracker is an open-source project. We firmly believe in a completely transparent development process and value any contributions. We would love to have you as a member of the community, whether you are assisting us in bug fixes, suggesting new features, enhancing our documentation, or simply spreading the word.
 
 - **Bug Report:** Please create a bug report if you encounter any errors or problems while utilizing the Push Protocol.
