@@ -81,7 +81,7 @@ You can explore the chatbot [here](https://app.push.org/chat/0xF67838B61Fd40eb79
 
 ## Contributing
 
-Build with Wallet Tracker is an open source Project. We firmly believe in a completely transparent development process and value any contributions. We would love to have you as a member of the community, whether you are assisting us in bug fixes, suggesting new features, enhancing our documentation, or simply spreading the word.
+Build with Wallet Tracker is an open source project. We firmly believe in a completely transparent development process and value any contributions. We would love to have you as a member of the community, whether you are assisting us in bug fixes, suggesting new features, enhancing our documentation, or simply spreading the word.
 
 - Bug Report: Please create a bug report if you encounter any errors or problems while utilising the Push Protocol.
 - Feature Request: Please submit a feature request if you have an idea or discover a capability that would make development simpler and more reliable.

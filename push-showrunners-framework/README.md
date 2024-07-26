@@ -40,7 +40,7 @@ Before setting up the project locally, you need to:
 
 5. **Start the project:**
     ```
-    yarn start
+    yarn run dev
     ```
 
 You should now have the notification sending.

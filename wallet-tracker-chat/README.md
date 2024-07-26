@@ -1,6 +1,6 @@
 # Wallet Tracker Chat
 
-Wallet Tracker Chat provides you with a user-friendly interface to utilize the same features as the Wallet Tracker Channel, with a few additional enhancements. Wallet Tracker Chat uses Push Chat as the chatting interface. You can read more about Push Chat [here](https://push.org/docs/chat/).
+Wallet Tracker Chat provides you with a user-friendly interface to utilize the similar features as the Wallet Tracker Channel, with a few additional enhancements. Wallet Tracker Chat uses Push Chat as the chatting interface. You can read more about Push Chat [here](https://push.org/docs/chat/).
 
 ## Setting Up the Project Locally
 
