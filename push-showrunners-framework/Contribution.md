@@ -1,6 +1,6 @@
 # Wallet Tracker Channel
 
-The Wallet Tracker Channel code is running on Push Showrunner, and most of the code is related to Showrunner. You can skip this for now if you want to read more about it, read [here](#). All logic code regarding the channel can be found in `src/showrunners/walletTracker`.
+The Wallet Tracker Channel code utilizes Push Showrunners to operate the channel in the backend., and most of the code in this folder is related to Showrunners. You can skip this for now or if you want to read more about it, read [here](https://push.org/docs/notifications/showrunners-scaffold/get-started/). All logic code regarding the channel can be found in `src/showrunners/walletTracker`.
 
 ## Key Takeaways and Contribution Guidelines
 
@@ -33,5 +33,3 @@ This file is used to declare the schema for the database.
 Contains some predetermined constants to act upon the logic.
 
 ---
-
-Ensure to follow the file structure and naming conventions as mentioned. Happy coding!
