@@ -55,7 +55,7 @@ const channelWallets = function loadShowrunnersWallets() {
       }
     } else {
       LoggerInstance.info(
-        `     ❌  ${channel}Keys.ts does not exisjs. aborting! Create ${channel}Keys.ts and add one wallet to it!!!`,
+        `     ❌  ${channel}Keys.ts does not exists. aborting! Create ${channel}Keys.ts and add one wallet to it!!!`,
       );
       process.exit(1);
     }
