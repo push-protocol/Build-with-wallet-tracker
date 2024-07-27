@@ -39,17 +39,16 @@ export const command_portfolio = async (
     }
 
     const walletWorth = walletData.totalWorth;
-    const totalTokens = walletData.totalTokens;
     const walletTokens = walletData.tokensInfo;
 
     let walletPerformance;
 
     if (chainIndexFound == -1) {
-      walletPerformance = `Total Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${totalTokens}\n\n\n`;
+      walletPerformance = `Total Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${walletTokens.length}\n\n\n`;
     }
 
     if (chainIndexFound != -1) {
-      walletPerformance = `Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${totalTokens}\n\n\n`;
+      walletPerformance = `Assets Worth: 💲${walletWorth}\nTotal Token Holding: 💰 ${walletTokens.length}\n\n\n`;
     }
 
     walletTokens.map((walletToken, index) => {
@@ -64,6 +63,13 @@ export const command_portfolio = async (
       type: "Text",
       content: `${walletPerformance}`,
     });
+
+    if (walletTokens.length > 35) {
+      await userAlice.chat.send(receiver, {
+        type: "Text",
+        content: `⚠️You have ${walletTokens.length} tokens, which is too many for a pie chart. Here are the top 35 tokens in your wallet.`,
+      });
+    }
 
     await userAlice.chat.send(receiver, {
       type: "Image",

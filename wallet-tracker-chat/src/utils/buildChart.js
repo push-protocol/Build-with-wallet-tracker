@@ -5,6 +5,7 @@
 // This helps them visualize their asset holding instead of reading bunch of numbers
 
 import ChartJSImage from "chart.js-image";
+import { getColours } from "./colours.js";
 
 export const buildChart = async (tokensData) => {
   try {
@@ -12,7 +13,13 @@ export const buildChart = async (tokensData) => {
     const tokenNames = [],
     valuationPercentage = [];
 
-    tokensData.tokensInfo.map((token) => {
+    // Sort the array in descending order
+    tokensData.tokensInfo.sort((a, b) => Number(b.worth) - Number(a.worth));
+
+    // Get the top 3 elements
+    let top35Tokens = tokensData.tokensInfo.slice(0, 35);
+    
+    top35Tokens.map((token) => {
       tokenNames.push(token.name);
 
       const tokenValuationPercent = (
@@ -23,6 +30,9 @@ export const buildChart = async (tokensData) => {
       valuationPercentage.push(tokenValuationPercent);
     });
 
+    // Generate colours for pir chart
+    const COLOURS = getColours(valuationPercentage.length > 35 ? 35 : valuationPercentage.length);
+
     // Build the pie chart data
     // For more information of configuration options, please refer: https://www.chartjs.org/docs
     const data = {
@@ -31,18 +41,9 @@ export const buildChart = async (tokensData) => {
         {
           label: "Portfolio",
           data: valuationPercentage,
-          backgroundColor: [
-            "rgb(255, 99, 132)",
-            "rgb(54, 162, 235)",
-            "rgb(255, 205, 86)",
-            "rgb(89, 61, 232)",
-            "rgb(61, 106, 86)",
-            "rgb(61, 232, 86)",
-            "rgb(94, 250, 26)",
-            "rgb(191, 250, 26)",
-            "rgb(250, 123, 26)",
-          ],
+          backgroundColor: COLOURS,
           hoverOffset: 4,
+          borderWidth: 0.5,
         },
       ],
     };
@@ -55,7 +56,7 @@ export const buildChart = async (tokensData) => {
     const line_chart = ChartJSImage().chart(config);
 
     // Get base64 encoded image
-    const chartBase64 = await line_chart.toDataURI()
+    const chartBase64 = await line_chart.toDataURI();
 
     return chartBase64;
 
