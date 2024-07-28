@@ -48,33 +48,6 @@ const writeEnvFile = (content) => {
   });
 };
 
-// Function to write the walletTrackerKeys.json file
-const writeWalletTrackerKeysFile = (privateKey) => {
-  const walletTrackerKeysContent = {
-    PRIVATE_KEY_NEW_STANDARD: {
-      PK: `0x${privateKey}`,
-      CHAIN_ID: 'eip155:11155111',
-    },
-    PRIVATE_KEY_OLD_STANDARD: `0x${privateKey}`,
-  };
-
-  const walletTrackerKeysPath = path.join('src', 'showrunners', 'walletTracker', 'walletTrackerKeys.json');
-  const walletTrackerKeysDir = path.dirname(walletTrackerKeysPath);
-
-  // Ensure the directory exists
-  fs.mkdirSync(walletTrackerKeysDir, { recursive: true });
-
-  return new Promise((resolve, reject) => {
-    fs.writeFile(walletTrackerKeysPath, JSON.stringify(walletTrackerKeysContent, null, 2), 'utf8', (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
-
 // Function to run 'yarn install'
 const runYarnInstall = () => {
   return new Promise((resolve, reject) => {
@@ -126,17 +99,14 @@ const run = async () => {
     await writeEnvFile(updatedContent);
     console.log('\n.env file created successfully!');
 
-    // Task 2: Create walletTrackerKeys.json with PK
-    await writeWalletTrackerKeysFile(privateKey);
-    console.log('walletTrackerKeys.json file created successfully!');
-
-    // Task 3: Update walletTrackerSettings.json with API Keys
+    // Task 2: Update walletTrackerSettings.json with API Keys
     fs.writeFileSync(WALLET_TRACKER_SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf8');
     console.log('walletTrackerSettings.json file updated successfully!');
 
-    // Task 4: Run `yarn install`
+    // Task 3: Run `yarn install`
     await runYarnInstall();
     console.log('yarn install executed successfully!');
+    
     console.log('\nRun `yarn run dev` to fire up your channel');
     
   } catch (error) {
@@ -150,8 +120,8 @@ const main = async () => {
     // Display Banner
     banner();
 
-    if (fileExists("./.env") && fileExists("./src/showrunners/walletTracker/walletTrackerKeys.json")) {
-      console.log("You already have `.env` and `channelkeys.json` file present!");
+    if (fileExists("./.env")) {
+      console.log("You already have `.env` file present!");
       const overwrite = await promptInput(
         "\nDo you want to overwrite [Y]/[N] ? "
       );

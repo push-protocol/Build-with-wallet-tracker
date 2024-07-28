@@ -8,7 +8,7 @@ import config from "../../config";
 import { ethers } from "ethers";
 import { CovalentClient } from "@covalenthq/client-sdk";
 import { user, CONSTANTS, PushAPI } from "@pushprotocol/restapi";
-import keys from "./walletTrackerKeys.json";
+import keys from "./walletTrackerKeys";
 import settings from "./walletTrackerSettings.json";
 import { userDataModel, blockNumberModel } from "./walletTrackerModel";
 import axios from "axios";
