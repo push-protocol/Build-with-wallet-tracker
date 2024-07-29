@@ -108,10 +108,10 @@ export const command_portfolio = async (
       content: `${walletPerformance}`,
     });
 
-    if (walletTokens.length > 35) {
+    if (totalTokens > 35) {
       await userAlice.chat.send(receiver, {
         type: "Text",
-        content: `⚠️You have ${walletTokens.length} tokens, which is too many for a pie chart. Here are the top 35 tokens in your wallet.`,
+        content: `⚠️You have ${totalTokens} tokens, which is too many for a pie chart. Here are the top 35 tokens in your wallet.`,
       });
     }
 
