@@ -107,6 +107,9 @@ const run = async () => {
     await runYarnInstall();
     console.log('yarn install executed successfully!');
     
+    // Run docker compose up here
+     
+    // --------------------------
     console.log('\nRun `yarn run dev` to fire up your channel');
     
   } catch (error) {

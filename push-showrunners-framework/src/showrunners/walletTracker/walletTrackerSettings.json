@@ -19,9 +19,9 @@
   "DeprecationPerEpoch": 900,
   "genisisEpoc": 17821509,
   "annualRewards": 1323100,
-  "providerUrl": "https://rpc.ankr.com/eth",
-  "coindarApiKey": "80182:cLyLriSwHvC2XUCvjVW",
-  "etherscanApiKey": "TZCWZ8YCQDH4THP54865SDGTG3XXY8ZAQU",
-  "covalentApiKey": "cqt_rQQFptDBBkVkwCv93RcwcrXtfKxG",
-  "alchemyApiKey": "jCHbR2LyCjTa8JY0JTpZsnR-Vtx_wwSP"
+  "providerUrl": "",
+  "coindarApiKey": "",
+  "etherscanApiKey": "",
+  "covalentApiKey": "",
+  "alchemyApiKey": ""
 }
