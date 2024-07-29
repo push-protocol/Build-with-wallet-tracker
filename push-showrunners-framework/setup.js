@@ -1,11 +1,9 @@
 const fs = require('fs');
 const readline = require('readline');
-const path = require('path');
 // const chalk = require('chalk');
 const { exec } = require('child_process');
 
 // Path to Wallet Tracker Settings
-const WALLET_TRACKER_SETTINGS_PATH = 'src/showrunners/walletTracker/walletTrackerSettings.json';
 
 // Function to prompt user for input
 const promptInput = (question) => {
@@ -81,36 +79,34 @@ const banner = () => {
 
 const run = async () => {
   const sampleContentEnvSample = await readSampleFile('.env.sample');
-  const sampleContentSettings = await readSampleFile(WALLET_TRACKER_SETTINGS_PATH);
-  const settings = JSON.parse(sampleContentSettings)
 
   const privateKey = await promptInput("Please enter your Private Key: ");
-  settings.providerUrl = await promptInput("Please enter Eth Sepolia Provider: ");
-  settings.coindarApiKey = await promptInput("Please enter your Coindar API key: ");
-  settings.etherscanApiKey = await promptInput("Please enter your Etherscan API Key: ");
-  settings.covalentApiKey = await promptInput("Please enter your Covalent API Key: ");
-  settings.alchemyApiKey = await promptInput("Please enter your Alchemy API Key: ");
+  const providerUrl = await promptInput("Please enter Eth Sepolia Provider: ");
+  const coindarApiKey = await promptInput("Please enter your Coindar API key: ");
+  const etherscanApiKey = await promptInput("Please enter your Etherscan API Key: ");
+  const covalentApiKey = await promptInput("Please enter your Covalent API Key: ");
+  const alchemyApiKey = await promptInput("Please enter your Alchemy API Key: ");
 
   const updatedPrivateKey = `0x${privateKey}`;
-  const updatedContent = sampleContentEnvSample.replace('your_private_key_here', updatedPrivateKey);
+  let updatedContent = sampleContentEnvSample.replace('your_private_key_here', updatedPrivateKey);
+  updatedContent = updatedContent.replace('your_provider_url_here', providerUrl);
+  updatedContent = updatedContent.replace('your_coindar_api_key_here', coindarApiKey);
+  updatedContent = updatedContent.replace('your_etherscan_api_key_here', etherscanApiKey);
+  updatedContent = updatedContent.replace('your_covalent_api_key_here', covalentApiKey);
+  updatedContent = updatedContent.replace('your_alchemy_api_key_here', alchemyApiKey);
 
   try {
     // Task 1: Create the .env file with private key
     await writeEnvFile(updatedContent);
     console.log('\n.env file created successfully!');
 
-    // Task 2: Update walletTrackerSettings.json with API Keys
-    fs.writeFileSync(WALLET_TRACKER_SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf8');
-    console.log('walletTrackerSettings.json file updated successfully!');
-
-    // Task 3: Run `yarn install`
+    // Task 2: Run `yarn install`
+    console.log('Running `yarn install`. Please wait...');
     await runYarnInstall();
     console.log('yarn install executed successfully!');
     
-    // Run docker compose up here
-     
-    // --------------------------
-    console.log('\nRun `yarn run dev` to fire up your channel');
+    console.log('\nOpen up a new terminal and run `docker-compose up`.');
+    console.log('Run `yarn run dev` to fire up your channel');
     
   } catch (error) {
     console.error('Error writing files:', error);
@@ -143,7 +139,8 @@ const main = async () => {
         await runYarnInstall();
         console.log('yarn install executed successfully!');
 
-        console.log('\nRun `yarn run dev` to fire up your channel');
+        console.log('\nOpen up a new terminal and run `docker-compose up`.');
+        console.log('Run `yarn run dev` to fire up your channel');
       }
 
     } else {

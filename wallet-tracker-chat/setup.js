@@ -61,6 +61,7 @@ const executeAllCommands = async (commands) => {
   // Execute each command sequentially
   for (let command of commands) {
     try {
+      console.log(`Executing ${command}. Please wait...`);
       await executeCommand(command);
     } catch (error) {
       console.error(`Failed to execute ${command}: ${error}`);
@@ -129,7 +130,6 @@ const main = async () => {
       );
 
       if (isPm2Start.charAt(0).toUpperCase() == "Y") {
-        console.log("\nExecuting `npm install`. Please wait...");
         // Commands
         const commands = ["npm install", "pm2 start index.js"];
     
@@ -140,7 +140,6 @@ const main = async () => {
       }
     
       if (isPm2Start.charAt(0).toUpperCase() == "N") {
-        console.log("\nExecuting `npm install`. Please wait...");
         // Commands
         const commands = ["npm install"];
     

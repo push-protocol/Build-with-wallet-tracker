@@ -1,4 +1,4 @@
-{
+export const settings = {
   "ETH_TRACKER_CACHE_KEY": "ETH_TRACKER_CACHE_KEY",
   "PAGINATION_PARAMS": {
     "limit": 1000,
@@ -19,9 +19,9 @@
   "DeprecationPerEpoch": 900,
   "genisisEpoc": 17821509,
   "annualRewards": 1323100,
-  "providerUrl": "",
-  "coindarApiKey": "",
-  "etherscanApiKey": "",
-  "covalentApiKey": "",
-  "alchemyApiKey": ""
+  "providerUrl": process.env.PROVIDER_URL,
+  "coindarApiKey": process.env.COINDAR_API_KEY,
+  "etherscanApiKey": process.env.ETHERSCAN_API_KEY,
+  "covalentApiKey": process.env.COVALENT_API_KEY,
+  "alchemyApiKey": process.env.ALCHEMY_API_KEY
 }
