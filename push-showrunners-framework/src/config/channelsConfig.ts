@@ -16,7 +16,7 @@ const channelWallets = function loadShowrunnersWallets() {
 
   if (directories.length == 0) {
     LoggerInstance.info(
-      `     ❌  showrunners doesn't have any channel folder in src/showrunners! Check docs.push.org to see how to setup showrunners properly!`,
+      `     ❌  showrunners doesn't have any channel folder in src/showrunners! Check docs.epns.io to see how to setup showrunners properly!`,
     );
     process.exit(1);
   }

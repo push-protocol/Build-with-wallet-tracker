@@ -22,8 +22,8 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
     const nftArr = [];
 
     // Return if error
-    if (data.error) {
-      return { error: true, message: data.message }
+    if (response.error) {
+      return { error: true, message: response.message }
     }
 
     const nfts = response.data;
