@@ -56,7 +56,7 @@ const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
 
 const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
 
-const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] - To get your wallet performance across the given days.\nWe are constantly working on it and adding new features.\n4. /topnfts [your wallet address] [no of results] [chain] - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nType '/help' to get the latest available commands and responses.`;
+const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] (optional) - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] (optional) - To get your wallet performance across the given days.\n4. /topnfts [your wallet address] [chain](required) - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nWe are constantly working on it and adding new features.\nType '/help' to get the latest available commands and responses.`;
 
 // ***************************************************************
 // /////////////////// INITIALIZE CHAT STREAM ////////////////////
@@ -317,16 +317,16 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       // ***************************************************************
 
       // Checks start here
-      if (params.length != 4 && params.length != 4) {
+      if (params.length != 3 && params.length != 3) {
         throw {
-          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/topnfts [your wallet address] [no of results] [chain]`,
+          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/topnfts [your wallet address] [chain]`,
         };
       }
 
       let chainIndexFound = -1;
 
-      if (params.length == 4) {
-        chainIndexFound = CHAINS.findIndex((chain) => chain == params[3]);
+      if (params.length == 3) {
+        chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
 
         if (chainIndexFound == -1) {
           throw {
@@ -336,7 +336,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       }
 
       const address = params[1];
-      const noOfNfts = Number(params[2]);
+      const noOfNfts = 10;
 
       if (isNaN(noOfNfts) || noOfNfts > 10) {
         throw {
