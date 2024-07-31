@@ -28,7 +28,7 @@ export const fetchImageAsBase64 = async (url, width, height, quality) => {
     const base64 = compressedImageBuffer.toString("base64");
 
     // Form the base64 image string
-    const base64Image = `data:${response.headers["content-type"]};base64,${base64}`;
+    const base64Image = `data:image/jpeg;base64,${base64}`;
 
     return base64Image;
 

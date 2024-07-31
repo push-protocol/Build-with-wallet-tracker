@@ -41,7 +41,7 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
 
       // 1. Check for URL or base64 encoded image response
       const isUrl = isValidUrl(nft.image); // NFT image is in URL format?
-      const isBase64 = isBase64Encoded(nft.image); // NFT image is in base64 format?
+      const isBase64 = isBase64Encoded(nft.image.split(",")[1]); // NFT image is in base64 format?
 
       // neither?
       if (!isUrl && !isBase64) {
