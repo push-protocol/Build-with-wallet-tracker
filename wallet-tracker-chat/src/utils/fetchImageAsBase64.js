@@ -9,6 +9,11 @@ import sharp from "sharp";
 // Function to fetch image and convert to base64
 export const fetchImageAsBase64 = async (url, width, height, quality) => {
   try {
+    const urlhead = await axios.head(url);
+    const contentType = urlhead.headers['content-type'];
+
+    if (contentType == "video/mp4" || contentType == "image/gif") return;
+    
     // Fetch the image as binary data
     const response = await axios.get(url, {
       responseType: "arraybuffer",

@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@covalenthq/client-sdk": "^1.0.2",
-    "@pushprotocol/restapi": "^1.7.23",
+    "@pushprotocol/restapi": "^1.7.25",
     "@unstoppabledomains/resolution": "^9.2.2",
     "axios": "^1.7.2",
     "chalk": "^5.3.0",

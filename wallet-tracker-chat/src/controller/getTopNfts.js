@@ -10,6 +10,7 @@ import { isValidUrl } from "../utils/isValidUrl.js";
 import { isBase64Encoded } from "../utils/isBase64Encoded.js";
 import { fetchImageAsBase64 } from "../utils/fetchImageAsBase64.js";
 import { resizeAndCompressBase64Image } from "../utils/resizeAndCompressBase64Image.js";
+import { isIpfsUrl } from "../utils/isIPFSUrl.js";
 
 // Image dimensions and quality
 const width = 800;
@@ -37,6 +38,14 @@ export const getTopNfts = async (address, chainIndex, noOfNfts) => {
 
       if (!nft.image) {
         continue;
+      }
+
+      if (nft.image.slice(-4) == "webp" || nft.image.slice(-3) == "gif") {
+        continue;
+      };
+
+      if (isIpfsUrl(nft.image)) {
+        nft.image = nft.image.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/");
       }
 
       // 1. Check for URL or base64 encoded image response
