@@ -13,6 +13,7 @@ import { command_portfolio } from "./src/commands/command_portfolio.js";
 import { command_performance } from "./src/commands/command_performance.js";
 import { command_topNfts } from "./src/commands/command_topNfts.js";
 import { command_calendar } from "./src/commands/command_calendar.js";
+import { command_approvals } from "./src/commands/command_approvals.js";
 
 // ***************************************************************
 // /////////////////// INITIALIZE USER ALICE /////////////////////
@@ -42,6 +43,7 @@ const COMMANDS = [
   "/calendar",
   "/performance",
   "/topnfts",
+  "/approvals",
 ];
 
 // ***************************************************************
@@ -56,7 +58,7 @@ const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
 
 const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
 
-const HELP_MESSAGE = `To best use this tool, you can use the following commands👇:\n1. 🪙: /portfolio [wallet address] [chain] (optional) - Get your current token holdings and asset valuation on a specified chain. Chain options: 'eth', 'pol', 'bsc', 'arb', 'polzk'. If not specified, you'll get the portfolio across all 5 chains.\n2. 🗓️: /calendar [number of days] - Get crypto events organized by your favorite tokens within the specified number of days.\n3. 📈: /performance [your wallet address] [no of days] [chain] (optional) - Get your wallet performance across the given days.\n4. 🎨: /topnfts [your wallet address] [chain] (required) - Get the top recent NFTs in your wallet. Chain options: 'eth', 'pol', 'bsc', 'arb'. Number of results should be a positive integer less than 10.\nWe are constantly working on it and adding new features.\nType ⚠️ '/help' to get the latest available commands and responses.`;
+const HELP_MESSAGE = `To best use this tool, you can use the following commands👇:\n1. 🪙: /portfolio [wallet address] [chain] (optional) - Get your current token holdings and asset valuation on a specified chain. Chain options: 'eth', 'pol', 'bsc', 'arb', 'polzk'. If not specified, you'll get the portfolio across all 5 chains.\n2. 🗓️: /calendar [number of days] - Get crypto events organized by your favorite tokens within the specified number of days.\n3. 📈: /performance [your wallet address] [no of days] [chain] (optional) - Get your wallet performance across the given days.\n4. 🎨: /topnfts [your wallet address] [chain] (required) - Get the top recent NFTs in your wallet. Chain options: 'eth', 'pol', 'bsc', 'arb'. Number of results should be a positive integer less than 10.\n5. ✅: /approvals [wallet address] [chain] (optional) - Get your current token approvals on a specified chain. Chain options: 'eth', 'pol', 'bsc', 'arb', 'polzk'. If not specified, you'll get the approvals across all 5 chains.\nWe are constantly working on it and adding new features.\nType ⚠️ '/help' to get the latest available commands and responses.`;
 
 // ***************************************************************
 // /////////////////// INITIALIZE CHAT STREAM ////////////////////
@@ -378,6 +380,69 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
         resolvedAddress,
         chainIndexFound,
         noOfNfts
+      );
+    }
+    
+    // COMMAND 5: /approvals
+    if (command == COMMANDS[5].toString()) {
+      // ***************************************************************
+      // //////////////////////// CHECKS START /////////////////////////
+      // ***************************************************************
+
+      if (params.length != 2 && params.length != 3) {
+        throw {
+          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/approvals [your wallet address] [chain]`,
+        };
+      }
+
+      let chainIndexFound;
+
+      if (params.length == 3) {
+        chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
+
+        if (chainIndexFound == -1) {
+          throw {
+            message: `Invalid chain⚠️\nPlease select one from these supported chains:\n1. Ethereum Mainnet - "eth"\n2. Polygon Mainnet - "pol"\n3. Binance Smart Chain - "bsc"\n4. Arbitrum Mainnet - "arb"\n5. Polygon zkEVM Mainnet - "polzk"`,
+          };
+        }
+      }
+
+      const address = params[1];
+
+      let resolvedAddress = "";
+      resolvedAddress = address;
+
+      if (address.substring(0, 2) !== "0x") {
+        resolvedAddress = await resolveENS(address);
+
+        if (resolvedAddress.error) {
+          resolvedAddress = await resolveUD(address);
+
+          if (resolvedAddress.error) {
+            throw {
+              message: `Invalid domain⚠️\nCheck your domain name`,
+            };
+          }
+        }
+      }
+
+      if (!checkValidWalletAddress(resolvedAddress)) {
+        throw {
+          message: `Invalid address⚠️\nCheck your wallet address`,
+        };
+      }
+
+      // ***************************************************************
+      // //////////////////////// CHECKS END /////////////////////////
+      // ***************************************************************
+
+      const receiver = message.from;
+      await command_approvals(
+        params,
+        receiver,
+        userAlice,
+        resolvedAddress,
+        chainIndexFound
       );
     }
     
