@@ -4,9 +4,6 @@ import { exec } from "child_process";
 import fs from "fs";
 import readline from "readline";
 
-// Commands
-const commands = ["npm install"];
-
 // Function to execute a shell command
 const executeCommand = (command) => {
   return new Promise((resolve, reject) => {
@@ -60,10 +57,11 @@ const banner = () => {
   console.log("**********************************************************\n");
 };
 
-const executeAllCommands = async () => {
+const executeAllCommands = async (commands) => {
   // Execute each command sequentially
   for (let command of commands) {
     try {
+      console.log(`Executing ${command}. Please wait...`);
       await executeCommand(command);
     } catch (error) {
       console.error(`Failed to execute ${command}: ${error}`);
@@ -81,13 +79,34 @@ const run = async () => {
   const udSdkKey = await promptInput("Enter your UD SDK Key: ");
   const moralisKey = await promptInput("Enter your Moralis Key: ");
   const coindarKey = await promptInput("Enter your Coindar Key: ");
+  const defiKey = await promptInput("Enter your DE.FI API Key: ");
+  const isPm2Start = await promptInput(
+    "\nDo you want to start with PM2 [Y]/[N] ? "
+  );
 
   // Example: Write environment variables to .env file
-  const envContent = `PRIVATE_KEY=${pvtKey}\nETHEREUM_RPC_PROVIDER=${ethRpc}\nCOVALENT_API_KEY=${covalentKey}\nUD_API_KEY=${udApiKey}\nUD_SDK_KEY=${udSdkKey}\nMORALIS_API_KEY=${moralisKey}\nCOINDAR_API_KEY=${coindarKey}\n`;
+  const envContent = `PRIVATE_KEY=${pvtKey}\nETHEREUM_RPC_PROVIDER=${ethRpc}\nCOVALENT_API_KEY=${covalentKey}\nUD_API_KEY=${udApiKey}\nUD_SDK_KEY=${udSdkKey}\nMORALIS_API_KEY=${moralisKey}\nCOINDAR_API_KEY=${coindarKey}\nDEFI_API_KEY=${defiKey}\n`;
   writeToEnvFile(envContent);
 
-  // Execute all  the commands in pipeline
-  await executeAllCommands();
+  if (isPm2Start.charAt(0).toUpperCase() == "Y") {
+    // Commands
+    const commands = ["npm install", "pm2 start index.js"];
+
+    // Execute all  the commands in pipeline
+    await executeAllCommands(commands);
+
+    console.log("\n\nRun `pm2 status` to see your application status.");
+  }
+
+  if (isPm2Start.charAt(0).toUpperCase() == "N") {
+    // Commands
+    const commands = ["npm install"];
+
+    // Execute all  the commands in pipeline
+    await executeAllCommands(commands);
+
+    console.log("\n\nRun `npm start` to fire up your application.");
+  }
 };
 
 // Main function to execute commands and populate .env file
@@ -104,20 +123,36 @@ const main = async () => {
     if (overwrite.charAt(0).toUpperCase() == "Y") {
       // Run the setup
       await run();
-      console.log("\n\nRun `npm start` to fire up your application.");
     }
 
     if (overwrite.charAt(0).toUpperCase() == "N") {
-      console.log("\nExecuting `npm install`. Please wait...");
+      const isPm2Start = await promptInput(
+        "Do you want to start with PM2 [Y]/[N] ? "
+      );
 
-      // Run the setup
-      await executeAllCommands();
-      console.log("\n\nRun `npm start` to fire up your application.");
+      if (isPm2Start.charAt(0).toUpperCase() == "Y") {
+        // Commands
+        const commands = ["npm install", "pm2 start index.js"];
+    
+        // Execute all  the commands in pipeline
+        await executeAllCommands(commands);
+    
+        console.log("\n\nRun `pm2 status` to see your application status.");
+      }
+    
+      if (isPm2Start.charAt(0).toUpperCase() == "N") {
+        // Commands
+        const commands = ["npm install"];
+    
+        // Execute all  the commands in pipeline
+        await executeAllCommands(commands);
+    
+        console.log("\n\nRun `npm start` to fire up your application.");
+      }
     }
   } else {
     // Run the setup
     await run();
-    console.log("\n\nRun `npm start` to fire up your application.");
   }
 };
 

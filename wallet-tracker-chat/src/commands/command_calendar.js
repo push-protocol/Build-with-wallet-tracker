@@ -5,7 +5,7 @@ export const command_calendar = async (receiver, userAlice, noOfDays) => {
   try {
     // Error from covalent
     const walletData = await formattedWalletBalance(receiver.slice(7), -1);
-    console.log("Receiver: ", receiver)
+    console.log("Receiver: ", receiver);
 
     if (walletData.error) {
       throw {
@@ -13,13 +13,30 @@ export const command_calendar = async (receiver, userAlice, noOfDays) => {
       };
     }
 
-    if (walletData.tokensInfo.length == 0) {
+    let allTokensObj = {}, allTokens = [];
+
+    // Merge all the chain tokens
+    const keys = Object.keys(walletData.tokensInfo);
+
+    keys.forEach((key) => {
+      const tokens = walletData.tokensInfo[key];
+      allTokens.push(...tokens);
+    });
+
+    allTokensObj = {
+      error: false,
+      tokensInfo: allTokens,
+      totalWorth: walletData.totalWorth,
+      totalTokens: walletData.totalTokens,
+    };
+
+    if (allTokensObj.tokensInfo.length == 0) {
       throw {
         message: "There are no tokens in your wallet. Try a different wallet!!",
       };
     }
 
-    const walletTokens = walletData.tokensInfo;
+    const walletTokens = allTokensObj.tokensInfo;
     let tokenSymbols = [];
 
     walletTokens.map((walletToken, index) => {

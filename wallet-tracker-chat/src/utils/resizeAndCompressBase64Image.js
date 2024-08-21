@@ -27,7 +27,7 @@ export const resizeAndCompressBase64Image = async (base64, width, height, qualit
     const compressedBase64Image = compressedImageBuffer.toString("base64");
 
     // Form the base64 image string
-    return `${base64ImagePrefix},${compressedBase64Image}`;
+    return `data:image/jpeg;base64,${compressedBase64Image}`;
 
   } catch (error) {
     console.error("Error processing image:", error);

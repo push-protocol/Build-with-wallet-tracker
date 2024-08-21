@@ -1,10 +1,10 @@
 // ***************************************************************
-// /////////////////// Get Wallet Balance /////////////////////
+// /////////////////// Get Token Approvals ///////////////////////
 // ***************************************************************
-//  Get token holdings details of an user from Covalent SDK 
+//  Get data from Covalent API regarding token approvals across platforms
 
 import { CovalentClient } from "@covalenthq/client-sdk";
-import 'dotenv/config'
+import "dotenv/config";
 
 const CHAINS = [
   "eth-mainnet",
@@ -13,7 +13,6 @@ const CHAINS = [
   "arbitrum-mainnet",
   "polygon-zkevm-mainnet",
 ];
-const QUOTE_CURRENCY = ["USD"];
 
 const FORMATTED_CHAINS = [
   "Ethereum",
@@ -23,18 +22,17 @@ const FORMATTED_CHAINS = [
   "Polygon zkEVM",
 ];
 
-const COVALENT_API_KEY= process.env.COVALENT_API_KEY;
+const COVALENT_API_KEY = process.env.COVALENT_API_KEY;
 
-export const getWalletBalance = async (address, chainIndexFound) => {
+export const getTokenApprovals = async (address, chainIndexFound) => {
   try {
-
     const client = new CovalentClient(COVALENT_API_KEY);
 
-    if (chainIndexFound != -1) { // Single Chain
-      const resp = await client.BalanceService.getTokenBalancesForWalletAddress(
+    if (chainIndexFound != -1) {
+      // Single Chain
+      const resp = await client.SecurityService.getApprovals(
         CHAINS[chainIndexFound].toString(),
-        address,
-        { quoteCurrency: QUOTE_CURRENCY[0].toString() }
+        address
       );
 
       if (resp.error) {
@@ -42,14 +40,14 @@ export const getWalletBalance = async (address, chainIndexFound) => {
       }
 
       return { error: false, data: resp.data.items };
-    } else { // For 5 chains
+    } else {
+      // For 5 chains
       const resultsObj = {};
 
       for (let i = 0; i < CHAINS.length; i++) {
-        const resp = await client.BalanceService.getTokenBalancesForWalletAddress(
+        const resp = await client.SecurityService.getApprovals(
           CHAINS[i].toString(),
-          address,
-          { quoteCurrency: QUOTE_CURRENCY[0].toString() }
+          address
         );
 
         if (resp.error) {
@@ -61,11 +59,14 @@ export const getWalletBalance = async (address, chainIndexFound) => {
 
         // Assign the array values to the object key
         resultsObj[key] = [...resp.data.items];
-      }  
-  
+      }
+
       return { error: false, data: resultsObj };
     }
   } catch (error) {
-    return { error: true, message: "Error getting balance of the wallet!" };
+    return {
+      error: true,
+      message: "Error getting token approvals of the wallet!",
+    };
   }
 };

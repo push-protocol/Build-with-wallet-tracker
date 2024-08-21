@@ -1,20 +1,20 @@
 import "dotenv/config";
 
+import { pm2Automation } from "./pm2Restart.js";
+
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
-
-import { formattedWalletBalance } from "./src/controller/formattedWalletBalance.js";
 
 import { checkValidWalletAddress } from "./src/utils/checkValidWalletAddress.js";
 import { resolveENS } from "./src/utils/resolveENS.js";
 import { resolveUD } from "./src/utils/resolveUD.js";
 
-import { getCryptoEvents } from "./src/apis/getCryptoEvents.js";
-
 import { command_portfolio } from "./src/commands/command_portfolio.js";
 import { command_performance } from "./src/commands/command_performance.js";
 import { command_topNfts } from "./src/commands/command_topNfts.js";
 import { command_calendar } from "./src/commands/command_calendar.js";
+import { command_approvals } from "./src/commands/command_approvals.js";
+import { command_topYields } from "./src/commands/command_topYields.js";
 
 // ***************************************************************
 // /////////////////// INITIALIZE USER ALICE /////////////////////
@@ -44,6 +44,8 @@ const COMMANDS = [
   "/calendar",
   "/performance",
   "/topnfts",
+  "/approvals",
+  "/topyields",
 ];
 
 // ***************************************************************
@@ -58,7 +60,7 @@ const CHAINS = ["eth", "pol", "bsc", "arb", "polzk"];
 
 const WELCOME_MESSAGE = "Welcome to Wallet Tracker🎊\n";
 
-const HELP_MESSAGE = `To best use this tool, you can use the following command(s)👇\n1. /portfolio [wallet address] [chain] - To get you current token holding and asset valuation on specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains\n2. /calendar [number of days] - To get crypto events organized by your favorite tokens within number of days\n3. /performance [your wallet address] [no of days] [chain] - To get your wallet performance across the given days.\nWe are constantly working on it and adding new features.\n4. /topnfts [your wallet address] [no of results] [chain] - To get the top recent NFTs in your wallet. Chain options: "eth", "pol", "bsc", "arb". No of results should positive integer less than 10\nType '/help' to get the latest available commands and responses.`;
+const HELP_MESSAGE = `To best use this tool, you can use the following commands👇:\n1. 🪙: /portfolio [wallet address] [chain] (optional) - Get your current token holdings and asset valuation on a specified chain. Chain options: 'eth', 'pol', 'bsc', 'arb', 'polzk'. If not specified, you'll get the portfolio across all 5 chains.\n2. 🗓️: /calendar [number of days] - Get crypto events organized by your favorite tokens within the specified number of days.\n3. 📈: /performance [your wallet address] [no of days] [chain] (optional) - Get your wallet performance across the given days.\n4. 🎨: /topnfts [your wallet address] [chain] (required) - Get the top recent NFTs in your wallet. Chain options: 'eth', 'pol', 'bsc', 'arb'. Number of results should be a positive integer less than 10.\n5. ✅: /approvals [wallet address] [chain] (optional) - Get your current token approvals on a specified chain. Chain options: 'eth', 'pol', 'bsc', 'arb', 'polzk'. If not specified, you'll get the approvals across all 5 chains.\n6. 📈: /topyields [address] [chain](optional) - Get top platforms providing best APRs as per portfolio.\nWe are constantly working on it and adding new features.\nType ⚠️ '/help' to get the latest available commands and responses.`;
 
 // ***************************************************************
 // /////////////////// INITIALIZE CHAT STREAM ////////////////////
@@ -131,7 +133,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     }
 
     // COMMAND 1: /help
-    if (command == COMMANDS[1].toString()) {
+    if (command.toLowerCase() == COMMANDS[1].toString()) {
       if (params.length != 1) {
         throw {
           message: `Invalid parameters count⚠️\nPlease follow the specific format:\nportfolio [your wallet address]`,
@@ -151,7 +153,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     }
 
     // COMMAND 2: /portfolio
-    if (command == COMMANDS[0].toString()) {
+    if (command.toLowerCase() == COMMANDS[0].toString()) {
       // ***************************************************************
       // //////////////////////// CHECKS START /////////////////////////
       // ***************************************************************
@@ -162,7 +164,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
         };
       }
 
-      let chainIndexFound;
+      let chainIndexFound = -1;
 
       if (params.length == 3) {
         chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
@@ -214,7 +216,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     }
 
     // COMMAND 3: /calendar
-    if (command == COMMANDS[2].toString()) {
+    if (command.toLowerCase() == COMMANDS[2].toString()) {
       // ***************************************************************
       // //////////////////////// CHECKS START /////////////////////////
       // ***************************************************************
@@ -243,7 +245,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     }
 
     // COMMAND 4: /performance
-    if (command == COMMANDS[3].toString()) {
+    if (command.toLowerCase() == COMMANDS[3].toString()) {
       // ***************************************************************
       // //////////////////////// CHECKS START /////////////////////////
       // ***************************************************************
@@ -313,22 +315,22 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
     }
 
     // COMMAND 5: /top nfts
-    if (command == COMMANDS[4].toString()) {
+    if (command.toLowerCase() == COMMANDS[4].toString()) {
       // ***************************************************************
       // //////////////////////// CHECKS START /////////////////////////
       // ***************************************************************
 
       // Checks start here
-      if (params.length != 4 && params.length != 4) {
+      if (params.length != 3 && params.length != 3) {
         throw {
-          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/topnfts [your wallet address] [no of results] [chain]`,
+          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/topnfts [your wallet address] [chain]`,
         };
       }
 
       let chainIndexFound = -1;
 
-      if (params.length == 4) {
-        chainIndexFound = CHAINS.findIndex((chain) => chain == params[3]);
+      if (params.length == 3) {
+        chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
 
         if (chainIndexFound == -1) {
           throw {
@@ -338,7 +340,7 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       }
 
       const address = params[1];
-      const noOfNfts = Number(params[2]);
+      const noOfNfts = 10;
 
       if (isNaN(noOfNfts) || noOfNfts > 10) {
         throw {
@@ -383,6 +385,132 @@ stream.on(CONSTANTS.STREAM.CHAT, async (message) => {
       );
     }
     
+    // COMMAND 5: /approvals
+    if (command.toLowerCase() == COMMANDS[5].toString()) {
+      // ***************************************************************
+      // //////////////////////// CHECKS START /////////////////////////
+      // ***************************************************************
+
+      if (params.length != 2 && params.length != 3) {
+        throw {
+          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/approvals [your wallet address] [chain]`,
+        };
+      }
+
+      let chainIndexFound = -1;
+
+      if (params.length == 3) {
+        chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
+
+        if (chainIndexFound == -1) {
+          throw {
+            message: `Invalid chain⚠️\nPlease select one from these supported chains:\n1. Ethereum Mainnet - "eth"\n2. Polygon Mainnet - "pol"\n3. Binance Smart Chain - "bsc"\n4. Arbitrum Mainnet - "arb"\n5. Polygon zkEVM Mainnet - "polzk"`,
+          };
+        }
+      }
+
+      const address = params[1];
+
+      let resolvedAddress = "";
+      resolvedAddress = address;
+
+      if (address.substring(0, 2) !== "0x") {
+        resolvedAddress = await resolveENS(address);
+
+        if (resolvedAddress.error) {
+          resolvedAddress = await resolveUD(address);
+
+          if (resolvedAddress.error) {
+            throw {
+              message: `Invalid domain⚠️\nCheck your domain name`,
+            };
+          }
+        }
+      }
+
+      if (!checkValidWalletAddress(resolvedAddress)) {
+        throw {
+          message: `Invalid address⚠️\nCheck your wallet address`,
+        };
+      }
+
+      // ***************************************************************
+      // //////////////////////// CHECKS END /////////////////////////
+      // ***************************************************************
+
+      const receiver = message.from;
+      await command_approvals(
+        params,
+        receiver,
+        userAlice,
+        resolvedAddress,
+        chainIndexFound
+      );
+    }
+
+    // COMMAND 6: /top yields
+    if (command.toLowerCase() == COMMANDS[6].toString()) {
+      // ***************************************************************
+      // //////////////////////// CHECKS START /////////////////////////
+      // ***************************************************************
+
+      if (params.length != 2 && params.length != 3) {
+        throw {
+          message: `Invalid parameters count⚠️\nPlease follow the specific format:\n/topyields [address] [chain](optional)`,
+        };
+      }
+
+      let chainIndexFound = -1;
+
+      if (params.length == 3) {
+        chainIndexFound = CHAINS.findIndex((chain) => chain == params[2]);
+
+        if (chainIndexFound == -1) {
+          throw {
+            message: `Invalid chain⚠️\nPlease select one from these supported chains:\n1. Ethereum Mainnet - "eth"\n2. Polygon Mainnet - "pol"\n3. Binance Smart Chain - "bsc"\n4. Arbitrum Mainnet - "arb"\n5. Polygon zkEVM Mainnet - "polzk"`,
+          };
+        }
+      }
+
+      const address = params[1];
+
+      let resolvedAddress = "";
+      resolvedAddress = address;
+
+      if (address.substring(0, 2) !== "0x") {
+        resolvedAddress = await resolveENS(address);
+
+        if (resolvedAddress.error) {
+          resolvedAddress = await resolveUD(address);
+
+          if (resolvedAddress.error) {
+            throw {
+              message: `Invalid domain⚠️\nCheck your domain name`,
+            };
+          }
+        }
+      }
+
+      if (!checkValidWalletAddress(resolvedAddress)) {
+        throw {
+          message: `Invalid address⚠️\nCheck your wallet address`,
+        };
+      }
+
+      // ***************************************************************
+      // //////////////////////// CHECKS END /////////////////////////
+      // ***************************************************************
+
+      const receiver = message.from;
+      await command_topYields(
+        params,
+        receiver,
+        userAlice,
+        resolvedAddress,
+        chainIndexFound
+      );
+    }
+    
   } catch (error) {
     await userAlice.chat.send(message.from, {
       type: "Text",
@@ -403,6 +531,9 @@ stream.on(CONSTANTS.STREAM.CHAT_OPS, (data) => {
 // Stream disconnection:
 stream.on(CONSTANTS.STREAM.DISCONNECT, async () => {
   console.log("Stream Disconnected");
+
+  // For autorestart chat streams once disconnected. Works with Pm2
+  // pm2Automation();
 });
 
 // ***************************************************************
