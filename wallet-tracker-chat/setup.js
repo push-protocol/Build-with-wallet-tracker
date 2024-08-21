@@ -79,12 +79,13 @@ const run = async () => {
   const udSdkKey = await promptInput("Enter your UD SDK Key: ");
   const moralisKey = await promptInput("Enter your Moralis Key: ");
   const coindarKey = await promptInput("Enter your Coindar Key: ");
+  const defiKey = await promptInput("Enter your DE.FI API Key: ");
   const isPm2Start = await promptInput(
     "\nDo you want to start with PM2 [Y]/[N] ? "
   );
 
   // Example: Write environment variables to .env file
-  const envContent = `PRIVATE_KEY=${pvtKey}\nETHEREUM_RPC_PROVIDER=${ethRpc}\nCOVALENT_API_KEY=${covalentKey}\nUD_API_KEY=${udApiKey}\nUD_SDK_KEY=${udSdkKey}\nMORALIS_API_KEY=${moralisKey}\nCOINDAR_API_KEY=${coindarKey}\n`;
+  const envContent = `PRIVATE_KEY=${pvtKey}\nETHEREUM_RPC_PROVIDER=${ethRpc}\nCOVALENT_API_KEY=${covalentKey}\nUD_API_KEY=${udApiKey}\nUD_SDK_KEY=${udSdkKey}\nMORALIS_API_KEY=${moralisKey}\nCOINDAR_API_KEY=${coindarKey}\nDEFI_API_KEY=${defiKey}\n`;
   writeToEnvFile(envContent);
 
   if (isPm2Start.charAt(0).toUpperCase() == "Y") {
