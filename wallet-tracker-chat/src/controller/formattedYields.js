@@ -1,6 +1,7 @@
 import { getYields } from "../apis/getYields.js";
 import { getWalletBalance } from "../apis/getWalletBalance.js";
 import { getDomainName } from "../utils/getDomainName.js";
+import { urlShortener } from "../utils/urlShortener.js";
 
 const FARM_CATEGORIES = ["Liquidity Pool", "Staking/Lending"];
 
@@ -41,7 +42,11 @@ export const formattedYields = async (address, chainIndexFound) => {
       );
 
       if (found !== undefined) {
-        const isEligible = allTokens.some((token) => token.contract_ticker_symbol == found.contract_ticker_symbol && token.quote_24h > 0 )
+        const isEligible = allTokens.some(
+          (token) =>
+            token.contract_ticker_symbol == found.contract_ticker_symbol &&
+            token.quote_24h > 0
+        );
 
         if (isEligible) {
           let category = FARM_CATEGORIES[1];
@@ -49,7 +54,7 @@ export const formattedYields = async (address, chainIndexFound) => {
 
           if (categories.includes("liquidity-pool")) {
             category = FARM_CATEGORIES[0];
-            
+
             if (element.tokens.deposits.length != 2) {
               continue;
             }
@@ -64,21 +69,29 @@ export const formattedYields = async (address, chainIndexFound) => {
             const oldApr = result[tokenSymbol].apr;
             const newApr = element.apr * 100;
 
+            const link = element.investmentUrl || element.farm.url;
+            const shortenedUrl = await urlShortener(link);
+
             if (newApr > oldApr) {
-              result[tokenSymbol].apr = (newApr);
+              result[tokenSymbol].apr = newApr;
               result[tokenSymbol].platform = getDomainName(element.farm.url);
-              result[tokenSymbol].link = element.investmentUrl || element.farm.url;
+              result[tokenSymbol].link = shortenedUrl;
               result[tokenSymbol].category = category;
               result[tokenSymbol].pair = pair;
             }
           } else {
-            result[tokenSymbol] = {
-              apr: (element.apr) * 100,
-              platform: getDomainName(element.farm.url),
-              link: element.investmentUrl || element.farm.url,
-              category: category,
-              pair: pair
-            };
+            const link = element.investmentUrl || element.farm.url;
+            const shortenedUrl = await urlShortener(link);
+
+            if (element.apr * 100 > 1) {
+              result[tokenSymbol] = {
+                apr: element.apr * 100,
+                platform: getDomainName(element.farm.url),
+                link: shortenedUrl,
+                category: category,
+                pair: pair,
+              };
+            }
           }
         }
       } else {
