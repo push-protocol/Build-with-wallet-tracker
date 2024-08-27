@@ -54,7 +54,7 @@ The channel serves as your comprehensive portfolio tracker, offering a variety o
   <img src="public/Assets/calendar.png" alt="Portfolio" width="600"/>
   </div>
 - **Push and Uniswap V2 LP Staking APR Rates:** Access the latest APR rates for Push and Uniswap V2 LP staking.
-  <div style="text-align: center;">
+  <div style="align= center;">
   <img src="public/Assets/apr.png" alt="Portfolio" width="600"/>
   </div>
 
