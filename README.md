@@ -54,6 +54,8 @@ The chatbot integrates all the functionalities of the channel into an interactiv
 
 - **Check User's Wallet Worth and Token Holdings:** Easily check the worth of your wallet and your token holdings.  
   `/portfolio [wallet address] [chain]` : To get your current token holding and asset valuation on the specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains.
+  <img src="public/Assets/portfolio.png" alt="Portfolio" width="600"/>
+
 
 - **Check Out Crypto Events:** Stay updated with upcoming crypto events.  
   `/calendar [number of days]` : To get crypto events organized by your favorite tokens within the specified number of days.
