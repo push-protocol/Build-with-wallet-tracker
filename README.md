@@ -42,18 +42,22 @@ Wallet Tracker currently exists as two projects: <br/>
 The channel serves as your comprehensive portfolio tracker, offering a variety of features designed to keep you informed and up-to-date. Key features include:
 
 - **Wallet Transactions Update:** Stay informed with real-time updates on your wallet transactions.
+
   <div style="text-align: center;">
   <img src="public/Assets/transaction.png" alt="Portfolio" width="600"/>
   </div>
 - **Biweekly Performance Update:** Receive regular updates on your portfolio's performance every two weeks.
+
   <div style="text-align: center;">
   <img src="public/Assets/performance.png" alt="Portfolio" width="600"/>
   </div>
 - **Crypto Calendar for Web3 Events:** Keep track of important web3 events with our dedicated crypto calendar.
+
   <div style="text-align: center;">
   <img src="public/Assets/calendar.png" alt="Portfolio" width="600"/>
   </div>
 - **Push and Uniswap V2 LP Staking APR Rates:** Access the latest APR rates for Push and Uniswap V2 LP staking.
+
   <div style="text-align: center;">
   <img src="public/Assets/apr.png" alt="Portfolio" width="600"/>
   </div>
