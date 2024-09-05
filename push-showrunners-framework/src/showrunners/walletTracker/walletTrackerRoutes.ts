@@ -2,17 +2,18 @@ import { Router, Request, Response, NextFunction, response } from 'express';
 import { Container } from 'typedi';
 import middlewares from '../../api/middlewares';
 import { celebrate, Joi } from 'celebrate';
-import WallettrackerChannel from './walletTrackerChannel';
-import { globalCycleModel } from './walletTrackerModel';
+import WallettrackerChannel from './wallettrackerChannel';
+import { globalCycleModel } from './wallettrackerModel';
 
 const route = Router();
 
 export default (app: Router) => {
-  app.use('/showrunners/wallet_tracker', route);
-  // routes for wallet tracker
+  app.use('/showrunners/walletTracker', route);
 
+
+  // routes for testing eth transfers
   route.post(
-    '/load_tokens',
+    '/trackEthBalance',
     celebrate({
       body: Joi.object({
         simulate: [Joi.bool(), Joi.object()],
@@ -21,7 +22,32 @@ export default (app: Router) => {
     middlewares.onlyLocalhost,
     async (req: Request, res: Response, next: NextFunction) => {
       const Logger: any = Container.get('logger');
-      Logger.debug('Calling /showrunners/load_tokens endpoint with body: %o', req.body.simulate.logicOverride.addressesWithPositions[0]);
+      Logger.debug('Calling /showrunners/wt ticker endpoint with body: %o', req.body);
+      try {
+        const wt = Container.get(WallettrackerChannel);
+      
+        const response = await wt.fetchEvents(null);
+
+        return res.status(201).json({ success: true, data: response });
+      } catch (e) {
+        Logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
+
+//route for testing portfolio
+  route.post(
+    '/trackPortfolio',
+    celebrate({
+      body: Joi.object({
+        simulate: [Joi.bool(), Joi.object()],
+      }),
+    }),
+    middlewares.onlyLocalhost,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const Logger: any = Container.get('logger');
+      Logger.debug('Calling /showrunners/load_tokens endpoint with body: %o', req.body);
       
         const wt = Container.get(WallettrackerChannel);
         const cycleValue = await globalCycleModel.findOne({_id: "global"})
@@ -51,8 +77,10 @@ export default (app: Router) => {
 }
   );
 
+  //This one may not return any logs as there can be no new events to fetch / send notifications about.
+  //route for fetching major events in web3.
   route.post(
-    '/apr',
+    '/trackEvents',
     celebrate({
       body: Joi.object({
         simulate: [Joi.bool(), Joi.object()],
@@ -62,30 +90,6 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       const Logger: any = Container.get('logger');
       Logger.debug('Calling /showrunners/load_tokens endpoint with body: %o', req.body);
-      try {
-        const wt = Container.get(WallettrackerChannel);
-        const response = await wt.calculateWalletPerformance(1000,'0xaB8a67743325347Aa53bCC66850f8F13df87e3AF','https://app.push.org/yieldv2',true,1000,1);
-        
-        return res.status(201).json({ success: true, data: response });
-      } catch (e) {
-        Logger.error('🔥 error: %o', e);
-        return next(e);
-      }
-    },
-  );
-
-  //route for sending new events
-  route.post(
-    '/events',
-    celebrate({
-      body: Joi.object({
-        simulate: [Joi.bool(), Joi.object()],
-      }),
-    }),
-    middlewares.onlyLocalhost,
-    async (req: Request, res: Response, next: NextFunction) => {
-      const Logger: any = Container.get('logger');
-      Logger.debug('Calling /showrunners/events endpoint with body: %o', req.body);
       try {
         const wt = Container.get(WallettrackerChannel);
         const response = await wt.sendEventInfo();
@@ -98,27 +102,75 @@ export default (app: Router) => {
     },
   );
 
-    //route for Sending Transaction History
-    route.post(
-      '/getHistory',
-      celebrate({
-        body: Joi.object({
-          simulate: [Joi.bool(), Joi.object()],
-        }),
+  //route for testing New hacks
+  route.post(
+    '/trackHacks',
+    celebrate({
+      body: Joi.object({
+        simulate: [Joi.bool(), Joi.object()],
       }),
-      middlewares.onlyLocalhost,
-      async (req: Request, res: Response, next: NextFunction) => {
-        const Logger: any = Container.get('logger');
-        Logger.debug('Calling /showrunners/getHistory endpoint with body: %o', req.body);
-        try {
-          const wt = Container.get(WallettrackerChannel);
-          const response = await wt.sendWalletTransactions();
-          
-          return res.status(201).json({ success: true, data: response });
-        } catch (e) {
-          Logger.error('🔥 error: %o', e);
-          return next(e);
-        }
-      },
-    );
+    }),
+    middlewares.onlyLocalhost,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const Logger: any = Container.get('logger');
+      Logger.debug('Calling /showrunners/events endpoint with body: %o', req.body);
+      try {
+        const wt = Container.get(WallettrackerChannel);
+        const response = await wt.checkNewHacks();
+        
+        return res.status(201).json({ success: true, data: response });
+      } catch (e) {
+        Logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
+
+  //route for testing Yield Opportunities.
+  route.post(
+    '/trackYield',
+    celebrate({
+      body: Joi.object({
+        simulate: [Joi.bool(), Joi.object()],
+      }),
+    }),
+    middlewares.onlyLocalhost,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const logger: any = Container.get('logger');
+      logger.debug('Calling /showrunners/wt ticker endpoint with body: %o', req.body);
+      try {
+        const wt = Container.get(WallettrackerChannel);
+        const response = await wt.checkNewYieldOpportunities();
+
+        return res.status(201).json({ success: true, data: response });
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
+
+  // route for testing token approvals
+  route.post(
+    '/trackApprovals',
+    celebrate({
+      body: Joi.object({
+        simulate: [Joi.bool(), Joi.object()],
+      }),
+    }),
+    middlewares.onlyLocalhost,
+    async (req: Request, res: Response, next: NextFunction) => {
+      const logger: any = Container.get('logger');
+      logger.debug('Calling /showrunners/wt ticker endpoint with body: %o', req.body);
+      try {
+        const wt = Container.get(WallettrackerChannel);
+        const response = await wt.checkApprovals();
+
+        return res.status(201).json({ success: true, data: response });
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
 };
