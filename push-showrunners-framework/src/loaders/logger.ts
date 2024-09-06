@@ -53,10 +53,19 @@ const formatter = winston.format.combine(
   winston.format.printf((info) => {
     const { timestamp, level, message, meta } = info;
 
-    const ts = moment(timestamp).local().format('HH:MM:ss');
+    
+    const ts = moment(Date.now()).local().format('HH:MM:ss');
+    const currentDate = new Date(Date.now());
+
+    const hours = currentDate.getHours().toString().padStart(2, '0');  // Get hours (0-23) and pad with zero if needed
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');  // Get minutes (0-59) and pad with zero
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');  // Get seconds (0-59) and pad with zero
+    
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    
     const metaMsg = meta ? `: ${parser(meta)}` : '';
 
-    return `${ts} ${level}    ${parser(message)} ${metaMsg}`;
+    return `${formattedTime} ${level} ${parser(message)} ${metaMsg}`;
   }),
   winston.format.colorize({
     all: true,

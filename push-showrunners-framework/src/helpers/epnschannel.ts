@@ -131,7 +131,7 @@ export class EPNSChannel {
   //
   //
   private get logBase() {
-    return `[${new Date(Date.now())}]-[${this.cSettings.name} Channel]- `;
+    return `[${this.cSettings.name} Channel]- `;
   }
 
   public get blockNoKey() {
