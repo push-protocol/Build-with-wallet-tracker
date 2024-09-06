@@ -39,7 +39,7 @@
 Wallet Tracker currently exists as two projects: <br/>
 
 - [Wallet Tracker Channel](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B)
-- [Wallet Tracker Chat](https://app.push.org/chat/0xF67838B61Fd40eb790A5893A7E3edc9e04637d88)
+- [Wallet Tracker Chat](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968)
 
 ### Wallet Tracker Channel
 
@@ -109,7 +109,7 @@ We are constantly working on it and adding new features. Type `/help` to get the
   <img src="public/Assets/wtc-intro-chat.png" alt="Portfolio" width="600"/>
   </div>
 
-You can explore the chatbot [here](https://app.push.org/chat/0xF67838B61Fd40eb790A5893A7E3edc9e04637d88) and start interacting with it!
+You can explore the chatbot [here](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968) and start interacting with it!
 
 ## Setting-up the project locally
 
