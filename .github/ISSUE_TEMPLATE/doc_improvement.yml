@@ -1,0 +1,41 @@
+name: Documentation Improvement
+description: Suggest improvements or additions to the Wallet Tracker documentation.
+title: '[DOC]: improvement name'
+labels: [documentation]
+body:
+
+  - type: textarea
+    id: doc_section
+    attributes:
+      label: Documentation Section
+      description: Which section of the documentation does this refer to?
+      placeholder: e.g., Installation Guide, API Reference, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement_suggestion
+    attributes:
+      label: Improvement Suggestion
+      description: A clear and concise description of what you want to improve.
+      placeholder: Describe the improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 'Screenshots'
+      description: If applicable, add screenshots to help explain your suggestion.
+      value: |
+        ![DESCRIPTION](LINK.png)
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the documentation issue here.
+      placeholder: Additional context

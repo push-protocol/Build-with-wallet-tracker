@@ -1,0 +1,41 @@
+name: Other Issues
+description: For any other type of issue related to the Wallet Tracker.
+title: '[OTHER]: issue name'
+labels: [question]
+body:
+
+  - type: textarea
+    id: issue_type
+    attributes:
+      label: Issue Type
+      description: What type of issue is this? (e.g., question, support request, etc.)
+      placeholder: Type of issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue_description
+    attributes:
+      label: Issue Description
+      description: A clear and concise description of your issue or question.
+      placeholder: Describe your issue or question
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 'Screenshots'
+      description: If applicable, add screenshots to help explain your issue.
+      value: |
+        ![DESCRIPTION](LINK.png)
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the issue here.
+      placeholder: Additional context
