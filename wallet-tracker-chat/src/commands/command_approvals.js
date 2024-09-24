@@ -64,7 +64,7 @@ export const command_approvals = async (
 
     await userAlice.chat.send(receiver, {
       type: "Text",
-      content: `Total Active Approvals: ✅ ${totalArrovals}\n\n${walletApprovals}`,
+      content: `Total Active Approvals: ✅ ${totalArrovals}\n\n${walletApprovals}\nRevoke unwanted approvals in https://revoke.cash/`,
     });
   } catch (error) {
     await userAlice.chat.send(receiver, {
