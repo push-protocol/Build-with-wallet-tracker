@@ -10,8 +10,8 @@ const CHAINS = [
   "eth-mainnet",
   "matic-mainnet",
   "bsc-mainnet",
-  "arbitrum-mainnet",
-  "polygon-zkevm-mainnet",
+  // "arbitrum-mainnet",
+  // "polygon-zkevm-mainnet",
 ];
 const QUOTE_CURRENCY = ["USD"];
 
