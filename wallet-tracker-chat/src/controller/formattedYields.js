@@ -105,11 +105,11 @@ export const formattedYields = async (address, chainIndexFound) => {
       yields: result,
     };
   } catch (error) {
-    console.log("Error while formatting token approvals: ", error);
+    console.log("Error while formatting yields: ", error);
     return {
       error: true,
       message:
-        "Something went wrong while formatting your token approvals! Try again or contact owner!",
+        "Something went wrong while formatting your yields! Try again or contact owner!",
     };
   }
 };

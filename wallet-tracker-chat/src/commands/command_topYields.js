@@ -30,7 +30,7 @@ export const command_topYields = async (
       const category = yields[key].category;
       const pair = yields[key].pair;
 
-      topYieldsMessage += `• ${(apr).toFixed(2)}% APR by ${ category == "Liquidity Pool" ?  `providing liquidity at ${key}/${pair} pool on ${platform}. ( ${link} )` : `depositing ${key} on ${platform}. ( ${link} )`}\n`;
+      topYieldsMessage += `• ${(apr).toFixed(2)}% APR by ${ category == "Liquidity Pool" ?  `providing liquidity at ${key}/${pair} pool on ${platform}. ( ${link.replace("https://", "")} )` : `depositing ${key} on ${platform}. ( ${link.replace("https://", "")} )`}\n`;
     });
 
     // ***************************************************************
