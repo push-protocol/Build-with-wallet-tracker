@@ -38,8 +38,8 @@
 
 Wallet Tracker currently exists as two projects: <br/>
 
-- [Wallet Tracker Channel](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B){:target="_blank"}
-- [Wallet Tracker Chat](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968){:target="_blank"}
+- [Wallet Tracker Channel](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B)
+- [Wallet Tracker Chat](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968)
 
 
 ### Wallet Tracker Channel
