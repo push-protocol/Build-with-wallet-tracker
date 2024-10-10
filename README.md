@@ -38,8 +38,9 @@
 
 Wallet Tracker currently exists as two projects: <br/>
 
-- [Wallet Tracker Channel](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B)
-- [Wallet Tracker Chat](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968)
+- [Wallet Tracker Channel](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B){:target="_blank"}
+- [Wallet Tracker Chat](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968){:target="_blank"}
+
 
 ### Wallet Tracker Channel
 
@@ -48,22 +49,46 @@ The channel serves as your comprehensive portfolio tracker, offering a variety o
 - **Wallet Transactions Update:** Stay informed with real-time updates on your wallet transactions.
 
   <div style="text-align: center;">
-  <img src="public/Assets/transaction.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/channel-transaction.png" alt="Portfolio" width="600"/>
   </div>
 - **Biweekly Performance Update:** Receive regular updates on your portfolio's performance every two weeks.
 
   <div style="text-align: center;">
-  <img src="public/Assets/performance.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/channel-performance.png" alt="Portfolio" width="600"/>
   </div>
 - **Crypto Calendar for Web3 Events:** Keep track of important web3 events with our dedicated crypto calendar.
 
   <div style="text-align: center;">
-  <img src="public/Assets/calendar.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/channel-event.png" alt="Portfolio" width="600"/>
   </div>
 - **Push and Uniswap V2 LP Staking APR Rates:** Access the latest APR rates for Push and Uniswap V2 LP staking.
 
   <div style="text-align: center;">
-  <img src="public/Assets/apr.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/channel-apr.png" alt="Portfolio" width="600"/>
+  </div>
+
+  - **Active Token Approvals:**  Stay informed about your active token approvals to maintain control over your asset security.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-approvals.png" alt="Token Approvals" width="600"/>
+  </div>
+
+  - **DAO Proposals:** Stay updated on proposals related to your held tokens to engage in governance effectively.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-dao.png" alt="DAO Proposals" width="600"/>
+  </div>
+
+  - **Recent Crypto Hacks:** Stay informed about recent crypto hacks to protect your assets and take necessary precautions.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-hack.png" alt="Crypto Hacks" width="600"/>
+  </div>
+
+  - **Yield Opportunities:** Stay informed about yield opportunities for tokens you hold to maximize your earnings and optimize your investments.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-yield.png" alt="Yeild Opportunities" width="600"/>
   </div>
 
 You can explore the channel [here](https://app.push.org/channels/0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B) to view the most recent notifications. Opt-in to the channel with your primary wallet to start receiving notifications for these events immediately.
@@ -76,28 +101,42 @@ The chatbot integrates all the functionalities of the channel into an interactiv
   `/portfolio [wallet address] [chain]` : To get your current token holding and asset valuation on the specified chain. Chain options: "eth", "pol", "bsc", "arb", "polzk". If not specified, you'll get the portfolio across all 5 chains.
 
   <div style="text-align: center;">
-  <img src="public/Assets/wtc-portfolio.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/chat-portfolio.png" alt="Portfolio" width="600"/>
   </div>
 
 - **Check Out Crypto Events:** Stay updated with upcoming crypto events.  
   `/calendar [number of days]` : To get crypto events organized by your favorite tokens within the specified number of days.
 
   <div style="text-align: center;">
-  <img src="public/Assets/wtc-calendar.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/chat-event.png" alt="Portfolio" width="600"/>
   </div>
 
 - **Wallet Performance:** Monitor the performance of your wallet.  
   `/performance [your wallet address] [no of days] [chain]` : To get your wallet performance across the given days.
 
   <div style="text-align: center;">
-  <img src="public/Assets/wtc-performance.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/chat-performance.png" alt="Portfolio" width="600"/>
   </div>
 
 - **NFTs Portfolio:** View your NFTs portfolio.
   `/topnfts [your wallet address] [chain]` : Get the top recent NFTs in your wallet.
 
   <div style="text-align: center;">
-  <img src="public/Assets/wtc-nft.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/chat-nft.png" alt="Portfolio" width="600"/>
+  </div>
+
+  - **Token Approvals:** View your NFTs portfolio.
+  `/topnfts [your wallet address] [chain]` : Get the top recent NFTs in your wallet.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/chat-approvals.png" alt="Portfolio" width="600"/>
+  </div>
+
+  - **Top Yields:** Yield Opportunities for tokens you Hold.
+  `/topyields [your wallet address] [chain]` : Get the Yield Opportunities for tokens you Hold.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/chat-yield.png" alt="Portfolio" width="600"/>
   </div>
 
 - **ENS and Unstoppable Domain Support:** Get support for Ethereum Name Service (ENS) and Unstoppable Domains.
@@ -106,7 +145,7 @@ The chatbot integrates all the functionalities of the channel into an interactiv
 
 We are constantly working on it and adding new features. Type `/help` to get the latest available commands and responses.
 <div style="text-align: center;">
-  <img src="public/Assets/wtc-intro-chat.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/chat-intro-chat.png" alt="Portfolio" width="600"/>
   </div>
 
 You can explore the chatbot [here](https://app.push.org/chat/0x171ee5794a4e81F0acCfAbf0CA9554b738be7968) and start interacting with it!
