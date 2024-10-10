@@ -11,11 +11,11 @@ import { URL } from 'url';
 let channelAddress = settings.channelAddress;
 export async function checkNewYieldOpportunities() {
     const channel = Container.get(wtChannel);
-    channel.logInfo(`In Check Yield Opportunities`);
+    console.log("IN CHannel");
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
         const yields = await fetchYields(settings.defiApiKey, settings.defiRektApiEndpoint);
 
         if (yields.length === 0) {
@@ -36,7 +36,7 @@ export async function checkNewYieldOpportunities() {
             index++;
         }
 
-        channel.logInfo(`Selected yields: ${JSON.stringify(selectedYields)}`)
+        channel.logInfo(`Selected yields: ${selectedYields}`)
 
        
         let page = 1;
@@ -47,6 +47,7 @@ export async function checkNewYieldOpportunities() {
                 page: page,
                 limit: 30,
                 setting: true,
+                channel: settings.channelAddress
             });
 
             if (userData.itemcount > 0) {
@@ -54,8 +55,8 @@ export async function checkNewYieldOpportunities() {
 
                 for (let j = 0; j < subscribers.length; j++) {
                     if (subscribers[j].settings !== null) {
-                        const settings = JSON.parse(subscribers[j].settings)[0];
-                        if (settings.user === true) {
+                        const chSettings = JSON.parse(subscribers[j].settings)[0];
+                        if (chSettings.user === true) {
 
                           for (let i = 0; i < selectedYields.length; i++) {
                             triggerYieldNotification(selectedYields[i], subscribers[j].subscriber);
@@ -144,7 +145,7 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
       const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
 
       const userAlice = await PushAPI.initialize(signer, {
-        env: CONSTANTS.ENV.STAGING,
+        env: CONSTANTS.ENV.PROD,
       });
 
       let title = '';
@@ -162,17 +163,17 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
 
 
 
-      let message = `Stake 💲<strong>${yieldData.tokens.deposits[0].symbol}</strong> and earn <span color='green'><strong>${(yieldData.apr * 100).toFixed(2)}% APR</strong></span> on <strong>${platform}</strong>`;
+      let message = `Stake 💲**${yieldData.tokens.deposits[0].symbol}** and earn <span color='green'>${(yieldData.apr * 100).toFixed(2)}% APR</span> on **${platform}**`;
       message += `[timestamp: ${Math.floor(Date.now() / 1000)}]`;
 
       await userAlice.channel.send([recipients], {
-        notification: { title: 'Yield Opportunity', body: 'Yield Opportunity' },
+        notification: { title: `Don't let your assets stay idle,stake and earn !`, body: '✨ Here are some yeild opportunities for you ✨' },
         payload: {
           title: title,
           body: message,
           cta: yieldData.farm.url
         },
-        channel: settings.channelAddress,
+        channel: settings.channelAddress
       });
     } catch (error) {
       channel.logError(`Error occured: ${error}`);

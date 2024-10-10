@@ -21,7 +21,9 @@ import { globalCycleModel } from './wallettrackerModel';
 import { times } from 'lodash';
 import { timeStamp } from 'console';
 import { BalanceService } from '@covalenthq/client-sdk';
-
+import {checkDaoProposals} from "./checkDaoProposals";
+import { handlePumpDump } from './checkPumpDump';
+import { checkTransfers } from './checkTokenTransfers';
 export default () => {
   // wallet tracker jobs
   const startTime = new Date(new Date().setHours(0, 0, 0, 0));
@@ -72,24 +74,13 @@ export default () => {
 
   const ethChannel = Container.get(wtChannel);
 
-  channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [on 1hr ]`);
-  schedule.scheduleJob({ start: startTime, rule: oneHourRule }, async function () {
-    const taskName = `${channel.cSettings.name} wallettracker.fetchEvents(false)`;
-    try {
-      ethChannel.fetchEvents(null);
-      logger.info(`🐣 Cron Task Completed -- ${taskName}`);
-    } catch (err) {
-      logger.error(`❌ Cron Task Failed -- ${taskName}`);
-      logger.error(`Error Object: %o`, err);
-    }
-  });
-
-  // send events job
   const oneDayRule = new schedule.RecurrenceRule();
   oneDayRule.dayOfWeek = new schedule.Range(0, 6);
   oneDayRule.hour = 0;
   oneDayRule.minute = 0;
   oneDayRule.second = 0;
+  // send events job
+
 
   channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [on 1day ]`)
   schedule.scheduleJob({ start: startTime, rule: oneDayRule }, async function () {
@@ -106,6 +97,8 @@ export default () => {
   // send hack reports every 12 hours job
   channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 12 hours]`);
 
+
+  
   // Rule to run every 12 hours
  const twelveHourRule = new schedule.RecurrenceRule();
  twelveHourRule.hour = new schedule.Range(0, 23,12);
@@ -122,12 +115,14 @@ export default () => {
     }
   });
 
-  // send yield opportunities every 1 day job
+
+  
+  // send yield opportunities every 7 days job
   channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 12 hours]`);
 
-  // Rule to run every 1 days // Changed to 1 day for testing
+  // Rule to run every 7 days // Changed to 1 day for testing
   const severDayRule = `0 0 */1 * *`
-  schedule.scheduleJob(severDayRule, async function () {
+  schedule.scheduleJob({ start: startTime, rule: oneDayRule }, async function () {
     const taskName = `${channel.cSettings.name} Check new Yield Opportunities`;
     try {
       await channel.checkNewYieldOpportunities();
@@ -138,12 +133,12 @@ export default () => {
     }
   });
 
-  // send approvals notifications every 1 days
+  // send approvals notifications every 3 days
   channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 hours]`);
 
   // Rule to run every 3 days //changed to 1 day for testing
   const everyThreeDays = '0 0 */1 * *';
-  schedule.scheduleJob(everyThreeDays, async function () {
+  schedule.scheduleJob({ start: startTime, rule: threeDayRule }, async function () {
     const taskName = `${channel.cSettings.name} sending Approval Notifications`;
     try {
       await channel.checkApprovals();
@@ -153,6 +148,55 @@ export default () => {
       logger.error(`${new Date(Date.now())}] Error Object: %o`, err);
     }
   });
-};
 
+ // send approvals notifications every 3 days
+ channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 Days]`);
+
+ // Rule to run every 3 days //changed to 1 day for testing
+ schedule.scheduleJob({ start: startTime, rule: threeDayRule }, async function () {
+   const taskName = `${channel.cSettings.name} Updating Dao Addresses`;
+   try {
+    await checkDaoProposals();
+     logger.info(`${new Date(Date.now())}] 🐣 Cron Task Completed -- ${taskName}`);
+   } catch (err) {
+     logger.error(`${new Date(Date.now())}] ❌ Cron Task Failed -- ${taskName}`);
+     logger.error(`${new Date(Date.now())}] Error Object: %o`, err);
+   }
+ });
+
+ // send approvals notifications every 3 days
+ channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 12 hours]`);
+ const threeHourRule = new schedule.RecurrenceRule();
+ threeHourRule.hour = new schedule.Range(0, 23,3);
+ threeHourRule.minute = 0;
+ threeHourRule.second = 0;
+
+ // Rule to run every 3 days //changed to 1 day for testing
+ schedule.scheduleJob({ start: startTime, rule: threeHourRule }, async function () {
+   const taskName = `${channel.cSettings.name} sending Pump Dump Notifications`;
+   try {
+    await handlePumpDump();
+     logger.info(`${new Date(Date.now())}] 🐣 Cron Task Completed -- ${taskName}`);
+   } catch (err) {
+     logger.error(`${new Date(Date.now())}] ❌ Cron Task Failed -- ${taskName}`);
+     logger.error(`${new Date(Date.now())}] Error Object: %o`, err);
+   }
+ });
+
+ channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 hours]`);
+
+
+
+ // Rule to run every 3 days //changed to 1 day for testing
+ schedule.scheduleJob({ start: startTime, rule: threeHourRule }, async function () {
+   const taskName = `${channel.cSettings.name} sending Token Transfer Notifications`;
+   try {
+    await checkTransfers();
+     logger.info(`${new Date(Date.now())}] 🐣 Cron Task Completed -- ${taskName}`);
+   } catch (err) {
+     logger.error(`${new Date(Date.now())}] ❌ Cron Task Failed -- ${taskName}`);
+     logger.error(`${new Date(Date.now())}] Error Object: %o`, err);
+   }
+ });
+};
 
