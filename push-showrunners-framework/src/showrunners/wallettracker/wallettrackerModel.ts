@@ -83,3 +83,46 @@ const hackNewsDataSchema = new Schema<HackNewsData>({
 
 // keep tracks of last know hack
 export const hackNewsDataModel = model<HackNewsData>('hackNewsDataDB', hackNewsDataSchema);
+
+export interface daoData {
+  _id: string;
+  data: {
+    [key: string]: string[];  // Dynamically created keys with arrays of unique strings
+  };
+}
+
+const daoSchema = new Schema<daoData>({
+  _id: {
+    type: String,
+    required: true
+  },
+  data: {
+    type: Map,            // Stores dynamic keys with values as arrays of strings
+    of: [String],         // Each key holds an array of strings
+    default: {}
+  },
+});
+
+// Create a model using the schema
+export const daoDataModel = model<daoData>('daoDataDb', daoSchema);
+
+
+export interface UserAddressTimestamp {
+  _id: string;
+  address: string;
+  lastTimestamp: Date; // Added lastTimestamp field
+}
+
+const userAddressTimestampSchema = new Schema<UserAddressTimestamp>({
+  _id: {
+    type: String,
+    required: true
+  },
+  lastTimestamp: {
+    type: Date,
+    required: true // Ensures lastTimestamp is provided
+  }
+});
+
+// Model for user address and last timestamp
+export const userAddressTimestampModel = model<UserAddressTimestamp>('UserAddressTimestampDB', userAddressTimestampSchema);

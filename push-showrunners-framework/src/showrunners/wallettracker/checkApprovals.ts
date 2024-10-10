@@ -9,11 +9,11 @@ import { CovalentClient } from '@covalenthq/client-sdk';
 
 export async function checkApprovals() {
     const channel = Container.get(wtChannel);
-    channel.logInfo('In Check Approvals');
+
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
 
         const client = new CovalentClient(settings.covalentApiKey);
 
@@ -26,14 +26,15 @@ export async function checkApprovals() {
                 page: page,
                 limit: 30,
                 setting: true,
+                channel: settings.channelAddress
             });
 
             if (userData.itemcount > 0) {
                 const subscribers = userData.subscribers;
                 for (let j = 0; j < subscribers.length; j++) {
                     if (subscribers[j].settings !== null) {
-                        const settings = JSON.parse(subscribers[j].settings)[2];
-                        if (settings.user === true) {
+                        const chSettings = JSON.parse(subscribers[j].settings)[2];
+                        if (chSettings.user === true) {
                             const resp = await client.SecurityService.getApprovals("eth-mainnet", subscribers[j].subscriber); //change to recipients[i]
             
             const recipient = resp.data.address;
@@ -67,9 +68,10 @@ export async function checkApprovals() {
                         notification: { title: 'Token Approvals', body: 'Token Approval Alert' },
                         payload: {
                             title: `🔐 Secure Your Tokens! Check Your Active Approvals Now!🔐`,
-                            body: notificationContent,
+                            body: notificationContent + `\nRevoke unwanted approvals in <span color='#CC3FAA'>https://revoke.cash/</span>`,
+                            cta: "https://revoke.cash/"
                         },
-                        channel: settings.channelAddress,
+                        channel: settings.channelAddress
                     });
                 }
             }

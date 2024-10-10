@@ -104,7 +104,7 @@ export async function calculateWalletPerformance(currentBalance: number, userAdd
       const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
 
       const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-      const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+      const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
 
       payloadMsg += `$PUSH Staking APR: <span color="#40916c">${PushApr}%</span>\n`;
       payloadMsg += `PUSH-WETH UNISWAP LP Token Staking APR: <span color="#40916c">${uniLpApr}%</span>\n`;
