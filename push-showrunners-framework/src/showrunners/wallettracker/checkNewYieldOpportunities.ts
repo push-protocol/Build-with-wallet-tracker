@@ -11,11 +11,11 @@ import { URL } from 'url';
 let channelAddress = settings.channelAddress;
 export async function checkNewYieldOpportunities() {
     const channel = Container.get(wtChannel);
-    channel.logInfo(`In Check Yield Opportunities`);
+    console.log("IN Channel");
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
         const yields = await fetchYields(settings.defiApiKey, settings.defiRektApiEndpoint);
 
         if (yields.length === 0) {
@@ -29,14 +29,14 @@ export async function checkNewYieldOpportunities() {
         let selectedYields = [];
 
         while (count <= 5) {
-            if (yields[index].apr * 100 > 2) {
+            if (yields[index].apr * 100 >= 2) {
                 selectedYields.push(yields[index]);
                 count++;
             }
             index++;
         }
 
-        channel.logInfo(`Selected yields: ${JSON.stringify(selectedYields)}`)
+        channel.logInfo(`Selected yields: ${selectedYields}`)
 
        
         let page = 1;
@@ -47,6 +47,7 @@ export async function checkNewYieldOpportunities() {
                 page: page,
                 limit: 30,
                 setting: true,
+                channel: settings.channelAddress
             });
 
             if (userData.itemcount > 0) {
@@ -54,8 +55,8 @@ export async function checkNewYieldOpportunities() {
 
                 for (let j = 0; j < subscribers.length; j++) {
                     if (subscribers[j].settings !== null) {
-                        const settings = JSON.parse(subscribers[j].settings)[0];
-                        if (settings.user === true) {
+                        const chSettings = JSON.parse(subscribers[j].settings)[0];
+                        if (chSettings.user === true) {
 
                           for (let i = 0; i < selectedYields.length; i++) {
                             triggerYieldNotification(selectedYields[i], subscribers[j].subscriber);
@@ -77,10 +78,9 @@ export async function checkNewYieldOpportunities() {
 }
 
 async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
-    const query = gql`
-     query {
-        opportunities(orderBy: TVL, orderDirection: desc) {
-          id
+    const query = gql`query {
+      opportunities(where:{statuses:VALID,chainIds:1},orderBy: TVL, orderDirection: desc){
+        id
           chainId
           apr
           totalValueLocked
@@ -116,8 +116,7 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
             }
           }
         }
-      }
-    `;
+      }`;
     // Create a GraphQL client with the X-Api-Key header
     const client = new GraphQLClient(endpoint, {
       headers: {
@@ -144,35 +143,26 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
       const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
 
       const userAlice = await PushAPI.initialize(signer, {
-        env: CONSTANTS.ENV.STAGING,
+        env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
       });
 
-      let title = '';
-
-      if (yieldData.apr * 100 > 10) {
-        title = `💎 Jackpot! Your crypto just struck gold with channel APR💎`;
-      } else if (yieldData.apr * 100 > 5) {
-        title = `🎉 Celebration time! Your yields just got sweeter🎉`
-      } else if (yieldData.apr * 100 > 2) {
-        title = `🚀 Ready for liftoff? Your crypto could aim higher🚀`
-      }
-
+      let title = 'Current Yield Opportunities';
 
       const platform = getPlatformName(yieldData.farm.url)
 
 
 
-      let message = `Stake 💲<strong>${yieldData.tokens.deposits[0].symbol}</strong> and earn <span color='green'><strong>${(yieldData.apr * 100).toFixed(2)}% APR</strong></span> on <strong>${platform}</strong>`;
+      let message = `Stake 💲**${yieldData.tokens.deposits[0].symbol}** and earn <span color='green'>${(yieldData.apr * 100).toFixed(2)}% APR</span> on **${platform}**`;
       message += `[timestamp: ${Math.floor(Date.now() / 1000)}]`;
 
       await userAlice.channel.send([recipients], {
-        notification: { title: 'Yield Opportunity', body: 'Yield Opportunity' },
+        notification: { title: `Don't let your assets stay idle,stake and earn !`, body: '✨ Here are some yeild opportunities for you ✨' },
         payload: {
           title: title,
           body: message,
           cta: yieldData.farm.url
         },
-        channel: settings.channelAddress,
+        channel: settings.channelAddress
       });
     } catch (error) {
       channel.logError(`Error occured: ${error}`);

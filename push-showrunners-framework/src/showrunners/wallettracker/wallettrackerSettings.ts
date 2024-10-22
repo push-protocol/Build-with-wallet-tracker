@@ -1,11 +1,4 @@
 export const settings = {
-  "ETH_TRACKER_CACHE_KEY": "ETH_TRACKER_CACHE_KEY",
-  "PAGINATION_PARAMS": {
-    "limit": 1000,
-    "currentPage": 1,
-    "totalPages": 1
-  },
-  "DEFAULT_BALANCE_OBJECT": { "balance": 0 },
   "covalentApiKey": process.env.COVALENT_API_KEY,
   "providerUrl":process.env.ETH_RPC,
   "coindarApiKey": process.env.COINDAR_API_KEY,
@@ -21,8 +14,8 @@ export const settings = {
   "DeprecationPerEpoch":900,
   "genisisEpoc":17821509,
   "annualRewards":1323100,
-  "defiApiKey": process.env.DEFI_API_KEY, // Get it from https://de.fi/api
+  "defiApiKey": process.env.DEFI_API_KEY,
   "defiRektApiEndpoint": "https://public-api.de.fi/graphql/rekts",
-  "channelAddress":" Your Channel Address on staging.push.org"
+  "channelAddress":"0x863C69A475D12Db41B5DbaC8e3bD63B4Dd11244c"
 
 }

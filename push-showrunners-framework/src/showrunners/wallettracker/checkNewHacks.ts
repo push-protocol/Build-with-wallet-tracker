@@ -25,11 +25,11 @@ interface Rekt {
 
 export async function checkNewHacks() {
     const channel = Container.get(wtChannel);
-    channel.logInfo(`In Check Hacks`);
+
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
         const rekts = await fetchRekts(settings.defiApiKey, settings.defiRektApiEndpoint);
 
         if (rekts.length === 0) {
@@ -74,6 +74,7 @@ export async function checkNewHacks() {
                         page: page,
                         limit: 30,
                         setting: true,
+                        channel: settings.channelAddress
                     });
 
                     if (userData.itemcount > 0) {
@@ -82,8 +83,8 @@ export async function checkNewHacks() {
                         for (let j = 0; j < subscribers.length; j++) {
                             if (subscribers[j].settings !== null) {
                                 // console.log(subscribers[j]); // Changed from [i] to [j]
-                                const settings = JSON.parse(subscribers[j].settings)[1];
-                                if (settings.user === true) {
+                                const chSettings = JSON.parse(subscribers[j].settings)[1];
+                                if (chSettings.user === true) {
                                     triggerUserNotification(rekt, subscribers[j].subscriber);
                                 }
                             }
@@ -112,20 +113,22 @@ async function triggerUserNotification(rekt: any, recipients: any) {
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
 
         const userAlice = await PushAPI.initialize(signer, {
-            env: CONSTANTS.ENV.STAGING,
+            env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
         });
 
-        let payloadMessage = `<span color="red"><strong>Funds Lost: </strong></span>` + '💲' + formatCurrency(rekt.fundsLost) + '\n' + '<strong>Issue: </strong>' + rekt.issueType + '\n' + '<strong>Category: </strong>' + rekt.category;
+        let payloadMessage = `<span color="red">Funds Lost:</span> 💲 ${formatCurrency(rekt.fundsLost)} \n <span color="green">Issue:</span> ${rekt.issueType} \n <span color="#FFBF00">Category:</span> ${rekt.category}`;
+
         payloadMessage += `[timestamp: ${Math.floor(Date.now() / 1000)}]`;
 
+
         await userAlice.channel.send([recipients], {
-            notification: { title: rekt.title, body: 'Crypto Security Alert' },
+            notification: { title: rekt.title, body: '🚨 Crypto Security Alert 🚨' },
             payload: {
                 title: rekt.title + ' ⚠️',
                 body: payloadMessage,
                 cta: 'https://de.fi/rekt-database'
             },
-            channel: settings.channelAddress,
+            channel: settings.channelAddress
         });
     } catch (error) {
         channel.logError(`Error occured: ${error.message}`);

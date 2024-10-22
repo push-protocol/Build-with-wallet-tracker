@@ -10,7 +10,6 @@ const channelAddress=settings.channelAddress;
 export async function fetchBalance()
 {
     const channel = Container.get(wtChannel);
-    channel.logInfo("In Fetch Balance");
     {
         try {
 
@@ -24,7 +23,7 @@ export async function fetchBalance()
           const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
     
           const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-          const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+          const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
     let i = 1;
     
           while (true) {
