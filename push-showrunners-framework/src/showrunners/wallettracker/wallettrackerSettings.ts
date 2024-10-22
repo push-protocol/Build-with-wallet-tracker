@@ -1,7 +1,7 @@
 export const settings = {
-  "covalentApiKey": process.env.PROD_COVALENT_API_KEY,
+  "covalentApiKey": process.env.COVALENT_API_KEY,
   "providerUrl":process.env.ETH_RPC,
-  "coindarApiKey": process.env.PROD_COINDAR_API_KEY,
+  "coindarApiKey": process.env.COINDAR_API_KEY,
   "pushCoreContract":"0x66329Fdd4042928BfCAB60b179e1538D56eeeeeE",
   "etherscanApiKey": process.env.ETHERSCAN_API,
   "yieldFarmingContract":"0x9D2513F5b539DC774C66b28ACEc94e4bD00105C2",
@@ -14,8 +14,8 @@ export const settings = {
   "DeprecationPerEpoch":900,
   "genisisEpoc":17821509,
   "annualRewards":1323100,
-  "defiApiKey": process.env.PROD_DEFI_API_KEY,
+  "defiApiKey": process.env.DEFI_API_KEY,
   "defiRektApiEndpoint": "https://public-api.de.fi/graphql/rekts",
-  "channelAddress":"0x0f0aE1ceEBc4b5aB14A47202eD6A52D3ef698b5B"
+  "channelAddress":"0x863C69A475D12Db41B5DbaC8e3bD63B4Dd11244c"
 
 }

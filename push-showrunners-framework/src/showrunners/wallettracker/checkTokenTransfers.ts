@@ -20,14 +20,20 @@ export async function checkTransfers() {
     const client = new CovalentClient(settings.covalentApiKey);
     //  channel.logInfo("Key:",settings.covalentApiKey);
     const title = `Daily Transfers`;
-    const message = `Here is your transaction history for today`;
+    const message = `Here comes your Daily transaction history`;
     let cta;
     channel.logInfo("6---Fetching Daily Transfers----6");
     // Initializing userAlice
     const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
 
     const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-    const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
+    const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
+
+    const userAliceSubscribers = await PushAPI.initialize(null, {
+      env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
+      account: settings.channelAddress,
+    });
+
     let hasMoreSubscribers = true;
     let currenttDate = new Date()
     let currentTimestamp = new Date().getTime(); // Convert to timestamp
@@ -44,7 +50,8 @@ export async function checkTransfers() {
   }
     
     while (hasMoreSubscribers) {
-      const userData: any = await userAlice.channel.subscribers({
+      console.log("Entering Whiel Loop");
+      const userData: any = await userAliceSubscribers.channel.subscribers({
         page: page,
         limit: 30,
         setting: true,
@@ -52,14 +59,13 @@ export async function checkTransfers() {
       });
       if (userData.itemcount > 0) {
         const subscribers = userData.subscribers;
-        // console.log(subscribers);
         for (let j = 0; j < subscribers.length; j++) {
           if (subscribers[j].settings !== null) {
             // change 1 to 3 on prod
             const chSettings = JSON.parse(subscribers[j].settings)[1];
             if (chSettings.user === true) {
               let userToCheck = subscribers[j].subscriber;
-                let balance = await axios.get(`https://api.etherscan.io/api?module=account&action=tokentx&address=${userToCheck}&page=1&offset=100&sort=asc&apikey=TZCWZ8YCQDH4THP54865SDGTG3XXY8ZAQU`);
+                let balance = await axios.get(`https://api.etherscan.io/api?module=account&action=tokentx&address=${userToCheck}&page=1&offset=100&sort=asc&apikey=${settings.etherscanApiKey}`);
                 
                 
                 // Function to create a delay
@@ -97,14 +103,14 @@ export async function checkTransfers() {
                         }
                         let tx = transaction.hash;
                         let cta = `https://etherscan.io/tx/${tx}`;
-                        await userAlice.channel.send([`${userToCheck}`], {
+                          await userAlice.channel.send([`${userToCheck}`], {
                             notification: { title: title, body: message },
                             payload: {
                                 title: title,
                                 body: payload,
                                 cta: cta
                             },
-                            channel: channelAddress
+                            channel: `eip155:1:${settings.channelAddress}`
                         });
 
                         // Delay to respect the rate limit

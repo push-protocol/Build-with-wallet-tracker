@@ -13,7 +13,7 @@ export async function fetchPortfolio(){
     const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
 
     const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-    const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
+    const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
     let currentBlockNumber = await axios.get(`https://api.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=${settings.etherscanApiKey}`);
     let i = 1;
 

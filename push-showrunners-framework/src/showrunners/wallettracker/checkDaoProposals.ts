@@ -34,7 +34,7 @@ export async function checkDaoProposals() {
       provider
     );
     const userAlice = await PushAPI.initialize(signer, {
-      env: CONSTANTS.ENV.PROD,
+      env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
     });
     let hasMoreSubscribers = true;
     let page = 1;
@@ -198,7 +198,7 @@ proposals(
             provider
           );
           const userAlice = await PushAPI.initialize(signer, {
-            env: CONSTANTS.ENV.PROD,
+            env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
           });
           await userAlice.channel.send([`${recipient}`], {
             notification: {

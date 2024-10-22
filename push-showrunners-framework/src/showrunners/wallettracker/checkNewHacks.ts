@@ -29,7 +29,7 @@ export async function checkNewHacks() {
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
         const rekts = await fetchRekts(settings.defiApiKey, settings.defiRektApiEndpoint);
 
         if (rekts.length === 0) {
@@ -51,7 +51,7 @@ export async function checkNewHacks() {
         }
 
         // Use the stored ID or the hardcoded value for testing
-        const useHardcodedId = false; // Set to false when not testing
+        const useHardcodedId = true; // Set to false when not testing
         const hardcodedId = 3961;
         const storedRektId = useHardcodedId ? hardcodedId : parseInt(storedRektData.rektId);
 
@@ -113,7 +113,7 @@ async function triggerUserNotification(rekt: any, recipients: any) {
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
 
         const userAlice = await PushAPI.initialize(signer, {
-            env: CONSTANTS.ENV.PROD,
+            env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
         });
 
         let payloadMessage = `<span color="red">Funds Lost:</span> 💲 ${formatCurrency(rekt.fundsLost)} \n <span color="green">Issue:</span> ${rekt.issueType} \n <span color="#FFBF00">Category:</span> ${rekt.category}`;

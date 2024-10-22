@@ -24,6 +24,7 @@ import { BalanceService } from '@covalenthq/client-sdk';
 import {checkDaoProposals} from "./checkDaoProposals";
 import { handlePumpDump } from './checkPumpDump';
 import { checkTransfers } from './checkTokenTransfers';
+import { checkNftTransfers } from './checkNftTransfers';
 export default () => {
   // wallet tracker jobs
   const startTime = new Date(new Date().setHours(0, 0, 0, 0));
@@ -167,11 +168,15 @@ export default () => {
  // send approvals notifications every 3 days
  channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 12 hours]`);
  const threeHourRule = new schedule.RecurrenceRule();
- threeHourRule.hour = new schedule.Range(0, 23,3);
+ threeHourRule.hour = new schedule.Range(0, 23, 3);
  threeHourRule.minute = 0;
  threeHourRule.second = 0;
 
- // Rule to run every 3 days //changed to 1 day for testing
+ const fiveMinRule = new schedule.RecurrenceRule();
+ fiveMinRule.minute = new schedule.Range(0, 59, 5);
+ fiveMinRule.second = 0;
+
+//  // Rule to run every 3 days //changed to 1 day for testing
  schedule.scheduleJob({ start: startTime, rule: threeHourRule }, async function () {
    const taskName = `${channel.cSettings.name} sending Pump Dump Notifications`;
    try {
@@ -183,15 +188,27 @@ export default () => {
    }
  });
 
- channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 hours]`);
-
-
+//  channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 hours]`);
 
  // Rule to run every 3 days //changed to 1 day for testing
  schedule.scheduleJob({ start: startTime, rule: threeHourRule }, async function () {
    const taskName = `${channel.cSettings.name} sending Token Transfer Notifications`;
    try {
     await checkTransfers();
+     logger.info(`${new Date(Date.now())}] 🐣 Cron Task Completed -- ${taskName}`);
+   } catch (err) {
+     logger.error(`${new Date(Date.now())}] ❌ Cron Task Failed -- ${taskName}`);
+     logger.error(`${new Date(Date.now())}] Error Object: %o`, err);
+   }
+ });
+
+ channel.logInfo(`-- 🛵 Scheduling Showrunner ${channel.cSettings.name} -  Channel [every 3 hours]`);
+
+ // Rule to run every 3 days //changed to 1 day for testing
+ schedule.scheduleJob({ start: startTime, rule: threeHourRule }, async function () {
+   const taskName = `${channel.cSettings.name} sending NFT Transfer Notifications`;
+   try {
+    await checkNftTransfers();
      logger.info(`${new Date(Date.now())}] 🐣 Cron Task Completed -- ${taskName}`);
    } catch (err) {
      logger.error(`${new Date(Date.now())}] ❌ Cron Task Failed -- ${taskName}`);

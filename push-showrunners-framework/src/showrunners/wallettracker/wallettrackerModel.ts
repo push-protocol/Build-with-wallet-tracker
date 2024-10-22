@@ -126,3 +126,23 @@ const userAddressTimestampSchema = new Schema<UserAddressTimestamp>({
 
 // Model for user address and last timestamp
 export const userAddressTimestampModel = model<UserAddressTimestamp>('UserAddressTimestampDB', userAddressTimestampSchema);
+
+export interface UserNftTimestamp {
+  _id: string;
+  address: string;
+  lastTimestamp: Date; // Added lastTimestamp field
+}
+
+const userNftTimestampSchema = new Schema<UserNftTimestamp>({
+  _id: {
+    type: String,
+    required: true
+  },
+  lastTimestamp: {
+    type: Date,
+    required: true // Ensures lastTimestamp is provided
+  }
+});
+
+// Model for user address and last timestamp
+export const userNftTimestampModel = model<UserNftTimestamp>('UserNftTimestampDB', userNftTimestampSchema);

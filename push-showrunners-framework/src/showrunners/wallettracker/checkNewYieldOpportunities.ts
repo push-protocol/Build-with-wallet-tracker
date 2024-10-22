@@ -11,11 +11,11 @@ import { URL } from 'url';
 let channelAddress = settings.channelAddress;
 export async function checkNewYieldOpportunities() {
     const channel = Container.get(wtChannel);
-    console.log("IN CHannel");
+    console.log("IN Channel");
     try {
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.PROD });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
         const yields = await fetchYields(settings.defiApiKey, settings.defiRektApiEndpoint);
 
         if (yields.length === 0) {
@@ -29,7 +29,7 @@ export async function checkNewYieldOpportunities() {
         let selectedYields = [];
 
         while (count <= 5) {
-            if (yields[index].apr * 100 > 2) {
+            if (yields[index].apr * 100 >= 2) {
                 selectedYields.push(yields[index]);
                 count++;
             }
@@ -78,10 +78,9 @@ export async function checkNewYieldOpportunities() {
 }
 
 async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
-    const query = gql`
-     query {
-        opportunities(orderBy: TVL, orderDirection: desc) {
-          id
+    const query = gql`query {
+      opportunities(where:{statuses:VALID,chainIds:1},orderBy: TVL, orderDirection: desc){
+        id
           chainId
           apr
           totalValueLocked
@@ -117,8 +116,7 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
             }
           }
         }
-      }
-    `;
+      }`;
     // Create a GraphQL client with the X-Api-Key header
     const client = new GraphQLClient(endpoint, {
       headers: {
@@ -145,19 +143,10 @@ async function fetchYields(apiKey: string, endpoint: string): Promise<any> {
       const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
 
       const userAlice = await PushAPI.initialize(signer, {
-        env: CONSTANTS.ENV.PROD,
+        env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV],
       });
 
-      let title = '';
-
-      if (yieldData.apr * 100 > 10) {
-        title = `💎 Jackpot! Your crypto just struck gold with channel APR💎`;
-      } else if (yieldData.apr * 100 > 5) {
-        title = `🎉 Celebration time! Your yields just got sweeter🎉`
-      } else if (yieldData.apr * 100 > 2) {
-        title = `🚀 Ready for liftoff? Your crypto could aim higher🚀`
-      }
-
+      let title = 'Current Yield Opportunities';
 
       const platform = getPlatformName(yieldData.farm.url)
 
