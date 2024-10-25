@@ -12,11 +12,10 @@ export async function sendEventInfo(){
     {
         const client = new CovalentClient(settings.covalentApiKey);
         const channel = Container.get(wtChannel);
-        channel.logInfo('In Send Event Info');
         // Initlaize user Alice
         const provider = new ethers.providers.JsonRpcProvider(settings.providerUrl);
         const signer = new ethers.Wallet(keys.PRIVATE_KEY_NEW_STANDARD.PK, provider);
-        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING });
+        const userAlice = await PushAPI.initialize(signer, { env: CONSTANTS.ENV[process.env.SHOWRUNNERS_ENV] });
         let i = 1;
   
         while (true) {
@@ -24,6 +23,7 @@ export async function sendEventInfo(){
             page: i,
             limit: 15,
             setting: true,
+            channel: settings.channelAddress
           });
           if (userData.itemcount != 0) {
             userData.subscribers.map(async (user) => {
@@ -99,7 +99,7 @@ export async function sendEventInfo(){
                      } else {
                        etaMessage = 'Starts in ' + eta;
                      }
-                     channel.sendNotificationHelper(event.caption,formattedTitle,`<span color='#457b9d'><strong>Event: </strong></span>${formattedTitle}\n\n${etaMessage} [timestamp: ${Math.floor(Date.now() / 1000)}]`,event.source,user.subscriber);
+                     channel.sendNotificationHelper(event.caption,formattedTitle,`<span color='#457b9d'>Event:</span>${formattedTitle}\n\n${etaMessage} [timestamp: ${Math.floor(Date.now() / 1000)}]`,event.source,user.subscriber);
                       
                    });
                  }       

@@ -32,7 +32,7 @@ async function startServer() {
       return;
     }
     let text;
-    if(process.env.SHOWRUNNERS_ENV === 'staging'){
+    if(process.env.SHOWRUNNERS_ENV === 'STAGING'){
       text = figlet.textSync("Showrunners Staging ", {
         font: "ANSI Shadow",
         horizontalLayout: "full",
@@ -43,7 +43,7 @@ async function startServer() {
         horizontalLayout: "full",
       })
     }
-    process.env.SHOWRUNNERS_ENV === 'staging'
+    process.env.SHOWRUNNERS_ENV === 'STAGING'
       ?
       console.log(gradient.pastel.multiline(text))
       : 
