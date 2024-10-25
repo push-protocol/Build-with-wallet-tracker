@@ -46,11 +46,18 @@ Wallet Tracker currently exists as two projects: <br/>
 
 The channel serves as your comprehensive portfolio tracker, offering a variety of features designed to keep you informed and up-to-date. Key features include:
 
-- **Wallet Transactions Update:** Stay informed with real-time updates on your wallet transactions.
+- **Daily Transfers:** Receive daily updates on your token transfers
 
   <div style="text-align: center;">
-  <img src="public/Assets/channel-transaction.png" alt="Portfolio" width="600"/>
+  <img src="public/Assets/channel-transfers.png" alt="Daily Transfers" width="600"/>
   </div>
+
+  - **Daily NFT Transfers:** Receive daily updates on your NFT transfers."
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-nft-transfers.png" alt="Daily NFT Tranfers" width="600"/>
+  </div>
+
 - **Biweekly Performance Update:** Receive regular updates on your portfolio's performance every two weeks.
 
   <div style="text-align: center;">
@@ -71,6 +78,12 @@ The channel serves as your comprehensive portfolio tracker, offering a variety o
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-approvals.png" alt="Token Approvals" width="600"/>
+  </div>
+
+  - **Pump or Dump:** RTrack daily market trends to catch the next pump or dump.
+
+  <div style="text-align: center;">
+  <img src="public/Assets/channel-pump-dump.png" alt="Pump and Dump" width="600"/>
   </div>
 
   - **DAO Proposals:** Stay updated on proposals related to your held tokens to engage in governance effectively.
