@@ -52,7 +52,7 @@ The channel serves as your comprehensive portfolio tracker, offering a variety o
   <img src="public/Assets/channel-transfers.png" alt="Daily Transfers" width="600"/>
   </div>
 
-  - **Daily NFT Transfers:** Receive daily updates on your NFT transfers."
+- **Daily NFT Transfers:** Receive daily updates on your NFT transfers.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-nft-transfers.png" alt="Daily NFT Tranfers" width="600"/>
