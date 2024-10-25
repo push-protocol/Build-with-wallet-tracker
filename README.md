@@ -74,31 +74,31 @@ The channel serves as your comprehensive portfolio tracker, offering a variety o
   <img src="public/Assets/channel-apr.png" alt="Portfolio" width="600"/>
   </div>
 
-  - **Active Token Approvals:**  Stay informed about your active token approvals to maintain control over your asset security.
+- **Active Token Approvals:**  Stay informed about your active token approvals to maintain control over your asset security.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-approvals.png" alt="Token Approvals" width="600"/>
   </div>
 
-  - **Pump or Dump:** RTrack daily market trends to catch the next pump or dump.
+- **Pump or Dump:** Track daily market trends to catch the next pump or dump.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-pump-dump.png" alt="Pump and Dump" width="600"/>
   </div>
 
-  - **DAO Proposals:** Stay updated on proposals related to your held tokens to engage in governance effectively.
+- **DAO Proposals:** Stay updated on proposals related to your held tokens to engage in governance effectively.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-dao.png" alt="DAO Proposals" width="600"/>
   </div>
 
-  - **Recent Crypto Hacks:** Stay informed about recent crypto hacks to protect your assets and take necessary precautions.
+- **Recent Crypto Hacks:** Stay informed about recent crypto hacks to protect your assets and take necessary precautions.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-hack.png" alt="Crypto Hacks" width="600"/>
   </div>
 
-  - **Yield Opportunities:** Stay informed about yield opportunities for tokens you hold to maximize your earnings and optimize your investments.
+- **Yield Opportunities:** Stay informed about yield opportunities for tokens you hold to maximize your earnings and optimize your investments.
 
   <div style="text-align: center;">
   <img src="public/Assets/channel-yield.png" alt="Yeild Opportunities" width="600"/>
@@ -138,14 +138,14 @@ The chatbot integrates all the functionalities of the channel into an interactiv
   <img src="public/Assets/chat-nft.png" alt="Portfolio" width="600"/>
   </div>
 
-  - **Token Approvals:** View your NFTs portfolio.
+- **Token Approvals:** View your NFTs portfolio.
   `/topnfts [your wallet address] [chain]` : Get the top recent NFTs in your wallet.
 
   <div style="text-align: center;">
   <img src="public/Assets/chat-approvals.png" alt="Portfolio" width="600"/>
   </div>
 
-  - **Top Yields:** Yield Opportunities for tokens you Hold.
+- **Top Yields:** Yield Opportunities for tokens you Hold.
   `/topyields [your wallet address] [chain]` : Get the Yield Opportunities for tokens you Hold.
 
   <div style="text-align: center;">
