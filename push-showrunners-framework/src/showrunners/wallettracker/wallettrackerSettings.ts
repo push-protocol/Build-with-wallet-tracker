@@ -16,6 +16,6 @@ export const settings = {
   "annualRewards":1323100,
   "defiApiKey": process.env.DEFI_API_KEY,
   "defiRektApiEndpoint": "https://public-api.de.fi/graphql/rekts",
-  "channelAddress":"0x863C69A475D12Db41B5DbaC8e3bD63B4Dd11244c"
+  "channelAddress": process.env.CHANNEL_ADDRESS
 
 }

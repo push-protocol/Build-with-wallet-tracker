@@ -86,14 +86,18 @@ const run = async () => {
   const etherscanApiKey = await promptInput("Please enter your Etherscan API Key: ");
   const covalentApiKey = await promptInput("Please enter your Covalent API Key: ");
   const alchemyApiKey = await promptInput("Please enter your Alchemy API Key: ");
+  const defiApiKey = await promptInput("Please enter your De.Fi API Key: ");
+  const channelAddress = await promptInput("Please enter your Channel address: ");
 
   const updatedPrivateKey = `0x${privateKey}`;
   let updatedContent = sampleContentEnvSample.replace('your_private_key_here', updatedPrivateKey);
-  updatedContent = updatedContent.replace('your_provider_url_here', providerUrl);
+  updatedContent = updatedContent.replace('your_eth_rpc_here', providerUrl);
   updatedContent = updatedContent.replace('your_coindar_api_key_here', coindarApiKey);
   updatedContent = updatedContent.replace('your_etherscan_api_key_here', etherscanApiKey);
   updatedContent = updatedContent.replace('your_covalent_api_key_here', covalentApiKey);
   updatedContent = updatedContent.replace('your_alchemy_api_key_here', alchemyApiKey);
+  updatedContent = updatedContent.replace('your_defi_api_key_here', alchemyApiKey);
+  updatedContent = updatedContent.replace('your_channel_address_here', channelAddress);
 
   try {
     // Task 1: Create the .env file with private key
